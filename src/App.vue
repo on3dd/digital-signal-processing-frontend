@@ -1,17 +1,23 @@
 <template>
   <div id="app">
     <h1>Digital Signal Processing</h1>
-    <Chart></Chart>
+    <ChartGraph id="chart" parent="chart-placeholder"/>
+    <ChartNavigation id="navigation" parent="navigation-placeholder"/>
+    <section class="chart-legend">
+      <span>Chart legend</span>
+    </section>
   </div>
 </template>
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
-import Chart from "@/components/Chart.vue";
+import ChartGraph from "@/components/ChartGraph.vue";
+import ChartNavigation from "@/components/ChartNavigation.vue";
 
 @Component({
   components: {
-    Chart,
+    ChartGraph,
+    ChartNavigation
   },
 })
 export default class App extends Vue {}
@@ -21,11 +27,25 @@ export default class App extends Vue {}
   @import "./scss/main";
 
   #app {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
     padding: 3rem;
     min-height: 100vh;
 
     > h1 {
       text-align: center;
+    }
+
+    section {
+      margin: .5rem;
+      width: 80%;
+
+      &.chart-legend {
+        padding: 1rem;
+        border: 1px solid #dddddd;
+      }
     }
   }
 </style>
