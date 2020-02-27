@@ -23,6 +23,7 @@
   })
   export default class ChartGraph extends Chart {
     @Getter signalValByIdx!: (idx: number) => number;
+    @Mutation updateIdx!: (idx: number) => void;
     @Mutation updateCoordinates!: (coordinates: MouseCoordinates) => void;
     @Mutation updateVisibility!: (isVisible: boolean) => void;
 
@@ -37,15 +38,22 @@
       const canvas = document.getElementById(this.id) as HTMLCanvasElement;
       const context = canvas.getContext("2d")!;
 
-      canvas.addEventListener("mousemove", e => {
-        const coordinates = this.getMousePosition(e);
-        this.redraw(coordinates.x, true);
-        // console.log(coordinates);
+      canvas.addEventListener("mouseover", () => {
         this.updateVisibility(true);
-        this.updateCoordinates(coordinates);
       });
 
-      canvas.addEventListener("mouseout", e => {
+      canvas.addEventListener("mousemove", e => {
+        const coordinates = this.getMousePosition(e);
+        const idx = Math.round(coordinates.x / this.cellWidth);
+
+        // console.log(coordinates)
+        this.redraw(idx, true);
+
+        this.updateCoordinates(coordinates);
+        this.updateIdx(idx);
+      });
+
+      canvas.addEventListener("mouseout", () => {
         this.updateVisibility(false);
         this.redraw();
       });
@@ -65,12 +73,12 @@
       this.redraw();
     }
 
-    protected redraw(x?: number, mouseover?: boolean) {
+    protected redraw(idx?: number, mouseover?: boolean) {
       this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
       this.drawVerticalMeasures();
       this.drawPoints();
       if (mouseover) {
-        this.drawHoveredElement(x!)
+        this.drawHoveredElement(idx!)
       }
     }
 
@@ -106,8 +114,7 @@
       }
     }
 
-    protected drawHoveredElement(x: number) {
-      const idx = Math.round(x / this.cellWidth);
+    protected drawHoveredElement(idx: number) {
       const currentX = idx * this.cellWidth;
 
       this.context.strokeStyle = '#dddddd';

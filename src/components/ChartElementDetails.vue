@@ -2,7 +2,7 @@
   <div class="details" :style="styles">
     <span class="title">{{title}}</span>
     <div class="details-val">
-      <span class="val">{{idx}}</span>
+      <span class="val">{{val}}</span>
       <span class="channel">{{channel}}</span>
     </div>
   </div>
@@ -17,8 +17,13 @@
   @Component
   export default class ChartNavigation extends Vue {
     @Getter signalValByIdx!: (idx: number) => number;
+    @Getter idx!: number;
     @Getter coordinates!: MouseCoordinates;
     @Getter isVisible!: boolean;
+
+    private get val(): number {
+      return this.signalValByIdx(this.idx);
+    }
 
     // private details!: HTMLElement;
 
@@ -30,8 +35,6 @@
       }
     }
 
-    private idx = 0;
-    // private coordinates: MouseCoordinates = {x: 0, y: 0};
     private title = 'Title';
     private channel = 'Channel';
   }
@@ -47,7 +50,7 @@
     text-align: center;
     border: 1px solid #dddddd;
     border-radius: 5px;
-    box-shadow: 0 5px 10px 0 rgba(0,0,0,.1);
+    box-shadow: 0 5px 10px 0 rgba(0, 0, 0, .1);
 
     span {
       display: block;

@@ -1,13 +1,13 @@
 import MouseCoordinates from "./mouseCoordinates";
 
 export class DetailsState {
-  coordinates: MouseCoordinates;
   idx: number;
+  coordinates: MouseCoordinates;
   isVisible: boolean;
 
-  constructor(coordinates: MouseCoordinates, idx: number) {
-    this.coordinates = coordinates;
+  constructor(idx: number, coordinates: MouseCoordinates, ) {
     this.idx = idx;
+    this.coordinates = coordinates;
     this.isVisible = false;
   }
 }
