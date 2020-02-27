@@ -8,52 +8,112 @@
 
 <script lang="ts">
   import {Component, Prop, Vue} from 'vue-property-decorator';
+  import {Getter} from 'vuex-class'
+
   import Chart from "../../types/chart";
+  import MouseCoordinates from "../../types/mouseCoordinates";
+  import {Signal} from "../../types/signals";
 
   @Component
   export default class ChartGraph extends Chart {
-    protected drawMeasures() {
-      const linesNum = 6;
+    @Getter signalValByIdx!: (idx: number) => number;
 
-      // Height of single measure cell
-      const cellHeight = (this.canvas.height - this.paddingY * 2) / (linesNum);
+    protected withCircles = true;
+    protected readonly linesNum = 6;
 
-      this.context.strokeStyle = '#dddddd';
-      this.context.lineWidth = 1;
-      this.context.font = '16px sans-serif';
-      this.context.fillStyle = '#777777';
+    // Height of single measure cell
+    protected get cellHeight(): number {
+      return (this.canvas.height - this.padding * 2) / (this.linesNum)
+    }
 
-      let currentY = this.paddingY;
+    protected init() {
+      const canvas = document.getElementById(this.id) as HTMLCanvasElement;
+      const context = canvas.getContext("2d")!;
 
-      this.context.beginPath();
+      canvas.addEventListener("mousemove", e => {
+        const {x, y} = this.getMousePosition(e);
+        // console.log(x, y);
+        this.redraw(x);
+      });
 
-      const measureVal = (i: number): string => {
-        switch (i) {
-          case 0:
-            return this.max.toString();
-          case linesNum:
-            return this.min.toString();
-          default:
-            return (this.max * ((linesNum - i) / linesNum)).toString()
-        }
-      };
+      this.canvas = canvas;
+      this.context = context;
+      this.canvasPlaceholder = document.getElementsByClassName(this.parent)[0] as HTMLElement;
 
-      for (let i = 0; i <= linesNum; i++) {
-        this.context.fillText(measureVal(i), 5, currentY - 8);
-        this.context.moveTo(0, currentY);
-
-        this.context.lineTo(this.canvas.width, currentY);
-        this.context.stroke();
-        currentY += cellHeight;
-      }
+      this.resize();
+      window.addEventListener("resize", this.resize);
     }
 
     protected resize() {
       this.canvas.width = this.canvasPlaceholder.offsetWidth;
       this.canvas.height = this.canvasPlaceholder.offsetHeight;
 
-      this.drawMeasures();
+      this.drawVerticalMeasures();
       this.drawPoints();
+    }
+
+    protected redraw(x: number) {
+      this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
+      this.drawVerticalMeasures();
+      this.drawPoints();
+      this.drawHorizontalMeasures(x);
+    }
+
+    // Draw measures for Y axis
+    protected drawVerticalMeasures() {
+      this.context.strokeStyle = '#dddddd';
+      this.context.lineWidth = 1;
+      this.context.font = '16px sans-serif';
+      this.context.fillStyle = '#777777';
+
+      let currentY = this.padding;
+
+      this.context.beginPath();
+
+      for (let i = 0; i <= this.linesNum; i++) {
+        this.context.fillText(this.measureVal(i), 5, currentY - 8);
+        this.context.moveTo(0, currentY);
+
+        this.context.lineTo(this.canvas.width, currentY);
+        this.context.stroke();
+        currentY += this.cellHeight;
+      }
+    }
+
+    protected measureVal(i: number): string {
+      switch (i) {
+        case 0:
+          return this.max.toString();
+        case this.linesNum:
+          return this.min.toString();
+        default:
+          return (this.max * ((this.linesNum - i) / this.linesNum)).toString()
+      }
+    }
+
+    // Draw measures for X axis
+    protected drawHorizontalMeasures(x: number) {
+      const idx = Math.round(x / this.cellWidth);
+      const currentX = idx * this.cellWidth;
+
+      this.context.strokeStyle = '#dddddd';
+      this.context.lineWidth = 2;
+
+      this.context.beginPath();
+      this.context.moveTo(currentX, 0);
+
+      this.context.lineTo(currentX, this.canvas.height);
+      this.context.stroke();
+
+      this.circle(currentX, this.currentY(this.signalValByIdx(idx)), 10, '#e74c3c');
+    }
+
+    protected getMousePosition(e: MouseEvent): MouseCoordinates {
+      const rect = this.canvas.getBoundingClientRect();
+      return {
+        x: e.clientX - rect.left,
+        y: e.clientY - rect.top
+      };
     }
   }
 </script>
@@ -61,13 +121,10 @@
 <style scoped lang="scss">
   .chart-placeholder {
     height: 40vh;
+    border: 1px solid #dddddd;
+    border-top: none;
 
     canvas {
-      /*width: 100%;*/
-      /*height: 100%;*/
-      border: 1px solid #dddddd;
-      border-top: none;
-      /*border-bottom: none;*/
     }
   }
 </style>

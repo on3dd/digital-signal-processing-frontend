@@ -37,5 +37,6 @@ export default {
   },
   getters: {
     signals: (state: SignalsState) => state.signals,
+    signalValByIdx: (state: SignalsState) => (idx: number) => state.signals[idx].val
   }
 }

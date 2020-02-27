@@ -10,7 +10,7 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from 'vue-property-decorator';
+import {Component, Vue} from 'vue-property-decorator';
 import ChartGraph from "@/components/ChartGraph.vue";
 import ChartNavigation from "@/components/ChartNavigation.vue";
 

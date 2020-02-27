@@ -11,17 +11,14 @@
   import Chart from "../../types/chart";
 
   @Component
-  export default class ChartNavigation extends Chart {
-    protected paddingY = 0;
-  }
+  export default class ChartNavigation extends Chart {}
 </script>
 
 <style scoped lang="scss">
   .navigation-placeholder {
     height: 7.5vh;
+    border: 1px solid #dddddd;
 
-    canvas {
-      border: 1px solid #dddddd;
-    }
+    canvas {}
   }
 </style>
