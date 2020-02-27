@@ -88,7 +88,7 @@ export default class Chart extends Vue {
 
   protected circle(centerX: number, centerY: number, radius: number, color: string) {
     this.context.beginPath();
-    this.context.arc(centerX, centerY - radius/2, radius, 0, 2 * Math.PI, false);
+    this.context.arc(centerX, centerY, radius, 0, 2 * Math.PI, false);
     this.context.fillStyle = '#ffffff';
     this.context.fill();
     this.context.lineWidth = 3;

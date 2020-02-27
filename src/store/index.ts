@@ -1,9 +1,10 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 
-import data from "@/store/modules/signals"
+import signals from "@/store/modules/signals"
+import details from "@/store/modules/details";
 
-Vue.use(Vuex)
+Vue.use(Vuex);
 
 export default new Vuex.Store({
   state: {
@@ -13,6 +14,7 @@ export default new Vuex.Store({
   actions: {
   },
   modules: {
-    data
+    signals,
+    details
   }
 })

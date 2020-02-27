@@ -2,23 +2,30 @@
   <section class="chart">
     <div :class="parent">
       <canvas :id="id"></canvas>
+      <ChartElementDetails/>
     </div>
   </section>
 </template>
 
 <script lang="ts">
-  import {Component, Prop, Vue} from 'vue-property-decorator';
-  import {Getter} from 'vuex-class'
+  import {Component, Prop} from 'vue-property-decorator';
+  import {Getter, Mutation} from 'vuex-class'
+
+  import ChartElementDetails from "@/components/ChartElementDetails.vue";
 
   import Chart from "../../types/chart";
   import MouseCoordinates from "../../types/mouseCoordinates";
-  import {Signal} from "../../types/signals";
 
-  @Component
+  @Component({
+    components: {
+      ChartElementDetails
+    }
+  })
   export default class ChartGraph extends Chart {
     @Getter signalValByIdx!: (idx: number) => number;
+    @Mutation updateCoordinates!: (coordinates: MouseCoordinates) => void;
+    @Mutation updateVisibility!: (isVisible: boolean) => void;
 
-    protected withCircles = true;
     protected readonly linesNum = 6;
 
     // Height of single measure cell
@@ -31,9 +38,16 @@
       const context = canvas.getContext("2d")!;
 
       canvas.addEventListener("mousemove", e => {
-        const {x, y} = this.getMousePosition(e);
-        // console.log(x, y);
-        this.redraw(x);
+        const coordinates = this.getMousePosition(e);
+        this.redraw(coordinates.x, true);
+        // console.log(coordinates);
+        this.updateVisibility(true);
+        this.updateCoordinates(coordinates);
+      });
+
+      canvas.addEventListener("mouseout", e => {
+        this.updateVisibility(false);
+        this.redraw();
       });
 
       this.canvas = canvas;
@@ -48,15 +62,16 @@
       this.canvas.width = this.canvasPlaceholder.offsetWidth;
       this.canvas.height = this.canvasPlaceholder.offsetHeight;
 
-      this.drawVerticalMeasures();
-      this.drawPoints();
+      this.redraw();
     }
 
-    protected redraw(x: number) {
+    protected redraw(x?: number, mouseover?: boolean) {
       this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
       this.drawVerticalMeasures();
       this.drawPoints();
-      this.drawHorizontalMeasures(x);
+      if (mouseover) {
+        this.drawHoveredElement(x!)
+      }
     }
 
     // Draw measures for Y axis
@@ -91,8 +106,7 @@
       }
     }
 
-    // Draw measures for X axis
-    protected drawHorizontalMeasures(x: number) {
+    protected drawHoveredElement(x: number) {
       const idx = Math.round(x / this.cellWidth);
       const currentX = idx * this.cellWidth;
 
@@ -120,11 +134,9 @@
 
 <style scoped lang="scss">
   .chart-placeholder {
+    position: relative;
     height: 40vh;
     border: 1px solid #dddddd;
     border-top: none;
-
-    canvas {
-    }
   }
 </style>
