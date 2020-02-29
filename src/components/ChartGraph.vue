@@ -2,7 +2,7 @@
   <section class="chart">
     <div :class="parent">
       <canvas :id="id"></canvas>
-      <ChartElementDetails/>
+      <ChartElementDetails :isReady="isReady"/>
     </div>
   </section>
 </template>
@@ -28,6 +28,7 @@
     @Mutation updateVisibility!: (isVisible: boolean) => void;
 
     protected readonly linesNum = 6;
+    protected isReady = false;
 
     // Height of single measure cell
     protected get cellHeight(): number {
@@ -49,8 +50,8 @@
         // console.log(coordinates)
         this.redraw(idx, true);
 
-        this.updateCoordinates(coordinates);
         this.updateIdx(idx);
+        this.updateCoordinates(coordinates);
       });
 
       canvas.addEventListener("mouseout", () => {
@@ -61,6 +62,7 @@
       this.canvas = canvas;
       this.context = context;
       this.canvasPlaceholder = document.getElementsByClassName(this.parent)[0] as HTMLElement;
+      this.isReady = true;
 
       this.resize();
       window.addEventListener("resize", this.resize);

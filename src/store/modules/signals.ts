@@ -37,6 +37,10 @@ export default {
   },
   getters: {
     signals: (state: SignalsState) => state.signals,
-    signalValByIdx: (state: SignalsState) => (idx: number) => state.signals[idx].val
+    signalValByIdx: (state: SignalsState) => (idx: number) => {
+      // console.log("Index:", idx);
+      // console.log("Signals:", state.signals);
+      return state.signals[idx].val
+    }
   }
 }

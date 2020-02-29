@@ -9,20 +9,26 @@
 </template>
 
 <script lang="ts">
-  import {Component, Vue} from 'vue-property-decorator';
+  import {Component, Prop, Vue} from 'vue-property-decorator';
   import {Getter} from 'vuex-class'
 
   import MouseCoordinates from "../../types/mouseCoordinates";
 
   @Component
-  export default class ChartNavigation extends Vue {
+  export default class ChartElementDetails extends Vue {
+    @Prop(Boolean) isReady!: boolean;
+
     @Getter signalValByIdx!: (idx: number) => number;
     @Getter idx!: number;
     @Getter coordinates!: MouseCoordinates;
     @Getter isVisible!: boolean;
 
+
     private get val(): number {
-      return this.signalValByIdx(this.idx);
+      // console.log("Val fired");
+      // console.log(this.isReady);
+      if (this.isReady) return this.signalValByIdx(this.idx);
+      else return 0;
     }
 
     // private details!: HTMLElement;

@@ -39,8 +39,9 @@ export default class Chart extends Vue {
   }
 
   async created() {
+    // console.log("Created fired");
     await this.fetchSignals();
-    // console.log('Signals:', this.signals);
+    // console.log("Fetched data:", this.signals);
 
     this.min = Math.min(...this.signals.map(el => el.val));
     this.max = Math.max(...this.signals.map(el => el.val));
@@ -50,6 +51,8 @@ export default class Chart extends Vue {
   }
 
   protected init() {
+    // console.log("Init fired");
+
     const canvas = document.getElementById(this.id) as HTMLCanvasElement;
     const context = canvas.getContext("2d")!;
 
