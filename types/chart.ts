@@ -86,7 +86,9 @@ export default class Chart extends Vue {
       this.context.lineTo(currentX, this.currentY(signal.val));
       this.context.stroke();
       currentX += this.cellWidth;
-    })
+    });
+
+    this.context.closePath();
   }
 
   protected circle(centerX: number, centerY: number, radius: number, color: string) {

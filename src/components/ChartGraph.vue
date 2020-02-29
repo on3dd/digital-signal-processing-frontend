@@ -30,34 +30,13 @@
     protected readonly linesNum = 6;
     protected isReady = false;
 
-    // Height of single measure cell
-    protected get cellHeight(): number {
-      return (this.canvas.height - this.padding * 2) / (this.linesNum)
-    }
-
     protected init() {
       const canvas = document.getElementById(this.id) as HTMLCanvasElement;
       const context = canvas.getContext("2d")!;
 
-      canvas.addEventListener("mouseover", () => {
-        this.updateVisibility(true);
-      });
-
-      canvas.addEventListener("mousemove", e => {
-        const coordinates = this.getMousePosition(e);
-        const idx = Math.round(coordinates.x / this.cellWidth);
-
-        // console.log(coordinates)
-        this.redraw(idx, true);
-
-        this.updateIdx(idx);
-        this.updateCoordinates(coordinates);
-      });
-
-      canvas.addEventListener("mouseout", () => {
-        this.updateVisibility(false);
-        this.redraw();
-      });
+      canvas.addEventListener("mouseover", this.mouseOverHandler);
+      canvas.addEventListener("mousemove", this.mouseMoveHandler);
+      canvas.addEventListener("mouseout", this.mouseOutHandler);
 
       this.canvas = canvas;
       this.context = context;
@@ -137,6 +116,31 @@
         x: e.clientX - rect.left,
         y: e.clientY - rect.top
       };
+    }
+
+    protected mouseOverHandler(): void {
+      this.updateVisibility(true);
+    }
+
+    protected mouseMoveHandler(e: MouseEvent): void {
+      const coordinates = this.getMousePosition(e);
+      const idx = Math.round(coordinates.x / this.cellWidth);
+
+      // console.log(coordinates)
+      this.redraw(idx, true);
+
+      this.updateIdx(idx);
+      this.updateCoordinates(coordinates);
+    }
+
+    protected mouseOutHandler(): void {
+      this.updateVisibility(false);
+      this.redraw();
+    }
+
+    // Height of single measure cell
+    protected get cellHeight(): number {
+      return (this.canvas.height - this.padding * 2) / (this.linesNum)
     }
   }
 </script>

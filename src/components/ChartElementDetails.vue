@@ -23,6 +23,9 @@
     @Getter coordinates!: MouseCoordinates;
     @Getter isVisible!: boolean;
 
+    // Temporary fields
+    private title = 'Title';
+    private channel = 'Channel';
 
     private get val(): number {
       // console.log("Val fired");
@@ -31,8 +34,6 @@
       else return 0;
     }
 
-    // private details!: HTMLElement;
-
     private get styles() {
       return {
         left: this.coordinates.x + 50 + 'px',
@@ -40,9 +41,6 @@
         display: this.isVisible ? 'block' : 'none'
       }
     }
-
-    private title = 'Title';
-    private channel = 'Channel';
   }
 </script>
 
