@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <h1>Digital Signal Processing</h1>
-    <ChartGraph id="chart" parent="chart-placeholder"/>
+    <ChartComponent id="chart" parent="chart-placeholder"/>
     <ChartNavigation id="navigation" parent="navigation-placeholder"/>
     <section class="chart-legend">
       <span>Chart legend</span>
@@ -11,12 +11,12 @@
 
 <script lang="ts">
 import {Component, Vue} from 'vue-property-decorator';
-import ChartGraph from "@/components/ChartGraph.vue";
+import ChartComponent from "@/components/ChartComponent.vue";
 import ChartNavigation from "@/components/ChartNavigation.vue";
 
 @Component({
   components: {
-    ChartGraph,
+    ChartComponent,
     ChartNavigation
   },
 })

@@ -21,7 +21,7 @@
       ChartElementDetails
     }
   })
-  export default class ChartGraph extends Chart {
+  export default class ChartComponent extends Chart {
     @Getter signalValByIdx!: (idx: number) => number;
     @Mutation updateIdx!: (idx: number) => void;
     @Mutation updateCoordinates!: (coordinates: MouseCoordinates) => void;
@@ -86,7 +86,7 @@
         this.context.fillText(text.toString(), 5, currentY - 10);
         this.context.moveTo(0, currentY);
 
-        this.context.lineTo(this.canvas.width, currentY);
+        this.context.lineTo(this.dpiW, currentY);
         this.context.stroke();
 
         currentY += this.cellHeight;

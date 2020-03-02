@@ -80,6 +80,9 @@ export default class Chart extends Draw {
     this.viewW = this.canvas.width;
     this.viewH = this.canvas.height;
 
+    console.log("DPI:", this.dpiH, this.dpiW);
+    console.log("View:", this.viewH, this.viewW);
+
     this.computeRatio();
     this.drawPoints();
   }
