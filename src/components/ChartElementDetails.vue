@@ -55,6 +55,7 @@
     border: 1px solid #dddddd;
     border-radius: 5px;
     box-shadow: 0 5px 10px 0 rgba(0, 0, 0, .1);
+    z-index: 10;
 
     span {
       display: block;

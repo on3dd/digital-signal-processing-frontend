@@ -1,23 +1,29 @@
 import {Component, Prop, Vue} from 'vue-property-decorator';
 import {Getter, Action} from 'vuex-class'
 
+import Draw from "./draw";
 import {Signal} from "@/../types/signals";
 
 @Component
-export default class Chart extends Vue {
+export default class Chart extends Draw {
   @Prop({required: true}) id!: string;
   @Prop({required: true}) parent!: string;
 
   @Action fetchSignals!: () => void;
   @Getter signals!: Signal[];
 
-  protected canvas!: HTMLCanvasElement;
-  protected context!: CanvasRenderingContext2D;
-  protected canvasPlaceholder!: HTMLElement;
-
   // Min and max values in input array
   protected min!: number;
   protected max!: number;
+
+  protected dpiW!: number;
+  protected dpiH!: number;
+
+  protected viewW!: number;
+  protected viewH!: number;
+
+  protected xRatio!: number;
+  protected yRatio!: number;
 
   protected padding = 0;
   protected withCircles = false;
@@ -68,36 +74,52 @@ export default class Chart extends Vue {
     this.canvas.width = this.canvasPlaceholder.offsetWidth;
     this.canvas.height = this.canvasPlaceholder.offsetHeight;
 
+    this.dpiW = this.canvas.width * 2;
+    this.dpiH = this.canvas.height * 2;
+
+    this.viewW = this.canvas.width;
+    this.viewH = this.canvas.height;
+
+    this.computeRatio();
     this.drawPoints();
   }
 
+  protected computeRatio() {
+    this.xRatio = this.viewW / (this.signals.length - 2);
+    this.yRatio = (this.max - this.min) / this.viewH;
+  }
+
   protected drawPoints() {
+    const data = this.getCoordinates();
+
     this.context.strokeStyle = '#e74c3c';
     this.context.lineWidth = 3;
     this.context.lineCap = 'butt';
     this.context.lineJoin = 'bevel';
 
     // Current X position
-    let currentX = this.padding;
+    // let currentX = this.padding;
 
     this.context.beginPath();
 
-    this.signals.forEach((signal: Signal) => {
-      this.context.lineTo(currentX, this.currentY(signal.val));
-      this.context.stroke();
-      currentX += this.cellWidth;
-    });
+    // this.signals.forEach((signal: Signal) => {
+    //   this.context.lineTo(currentX, this.currentY(signal.val));
+    //   this.context.stroke();
+    //   currentX += this.cellWidth;
+    // });
 
+    data.forEach(([x, y]) => this.context.lineTo(x, y));
+
+    this.context.stroke();
     this.context.closePath();
   }
 
-  protected circle(centerX: number, centerY: number, radius: number, color: string) {
-    this.context.beginPath();
-    this.context.arc(centerX, centerY, radius, 0, 2 * Math.PI, false);
-    this.context.fillStyle = '#ffffff';
-    this.context.fill();
-    this.context.lineWidth = 3;
-    this.context.strokeStyle = '#e74c3c';
-    this.context.stroke();
+  protected getCoordinates() {
+    return this.signals.map((signal: Signal, index) => {
+      const y = this.viewH - ((signal.val - this.min) / this.yRatio);
+      const x = index * this.xRatio - (this.xRatio / 2);
+
+      return [x, y];
+    })
   }
 }

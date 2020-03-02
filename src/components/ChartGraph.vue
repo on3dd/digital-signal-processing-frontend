@@ -27,16 +27,16 @@
     @Mutation updateCoordinates!: (coordinates: MouseCoordinates) => void;
     @Mutation updateVisibility!: (isVisible: boolean) => void;
 
-    protected readonly linesNum = 6;
+    protected readonly linesNum = 5;
     protected isReady = false;
 
     protected init() {
       const canvas = document.getElementById(this.id) as HTMLCanvasElement;
       const context = canvas.getContext("2d")!;
 
-      canvas.addEventListener("mouseover", this.mouseOverHandler);
-      canvas.addEventListener("mousemove", this.mouseMoveHandler);
-      canvas.addEventListener("mouseout", this.mouseOutHandler);
+      // canvas.addEventListener("mouseover", this.mouseOverHandler);
+      // canvas.addEventListener("mousemove", this.mouseMoveHandler);
+      // canvas.addEventListener("mouseout", this.mouseOutHandler);
 
       this.canvas = canvas;
       this.context = context;
@@ -51,6 +51,13 @@
       this.canvas.width = this.canvasPlaceholder.offsetWidth;
       this.canvas.height = this.canvasPlaceholder.offsetHeight;
 
+      this.dpiW = this.canvas.width * 2;
+      this.dpiH = this.canvas.height * 2;
+
+      this.viewW = this.canvas.width;
+      this.viewH = this.canvas.height;
+
+      this.computeRatio();
       this.redraw();
     }
 
@@ -65,33 +72,24 @@
 
     // Draw measures for Y axis
     protected drawVerticalMeasures() {
+      let currentY = this.cellHeight;
+
       this.context.strokeStyle = '#dddddd';
       this.context.lineWidth = 1;
-      this.context.font = '16px sans-serif';
-      this.context.fillStyle = '#777777';
-
-      let currentY = this.padding;
+      this.context.font = '16px Helvetica, sans-serif';
+      this.context.fillStyle = '#96a2aa';
 
       this.context.beginPath();
 
       for (let i = 0; i <= this.linesNum; i++) {
-        this.context.fillText(this.measureVal(i), 5, currentY - 8);
+        const text = Math.round((this.viewH - currentY) * this.yRatio);
+        this.context.fillText(text.toString(), 5, currentY - 10);
         this.context.moveTo(0, currentY);
 
         this.context.lineTo(this.canvas.width, currentY);
         this.context.stroke();
-        currentY += this.cellHeight;
-      }
-    }
 
-    protected measureVal(i: number): string {
-      switch (i) {
-        case 0:
-          return this.max.toString();
-        case this.linesNum:
-          return this.min.toString();
-        default:
-          return (this.max * ((this.linesNum - i) / this.linesNum)).toString()
+        currentY += this.cellHeight;
       }
     }
 
@@ -140,7 +138,7 @@
 
     // Height of single measure cell
     protected get cellHeight(): number {
-      return (this.canvas.height - this.padding * 2) / (this.linesNum)
+      return (this.viewH - this.padding * 2) / (this.linesNum)
     }
   }
 </script>
@@ -150,6 +148,5 @@
     position: relative;
     height: 40vh;
     border: 1px solid #dddddd;
-    border-top: none;
   }
 </style>
