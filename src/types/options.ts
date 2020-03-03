@@ -43,13 +43,13 @@ export interface LineOptions {
 }
 
 export interface YAxisOptions {
-  dpiW: number,
-  viewH: number,
-  yMax: number,
-  yMin: number,
-  margin: number,
+  dpiW: number;
+  viewH: number;
+  yMax: number;
+  yMin: number;
+  margin: number;
   delta: number;
-  rowsCount: number
+  rowsCount: number;
 }
 
 export interface XAxisOptions {

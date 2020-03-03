@@ -3,5 +3,5 @@ export default interface Mouse {
   tooltip: {
     top: number;
     left: number;
-  }
+  };
 }

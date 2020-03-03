@@ -233,7 +233,7 @@ export default class DetailChart extends BaseChart {
     this.tooltip.hide();
   }
 
-  mouseMoveHandler({clientX, clientY}: { clientX: number, clientY: number }) {
+  mouseMoveHandler({clientX, clientY}: { clientX: number; clientY: number }) {
     const {left, top} = this.$el.getBoundingClientRect();
     // this.proxy.mouse = {
     //   x: (clientX - left) * 2,

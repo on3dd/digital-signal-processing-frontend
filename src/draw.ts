@@ -20,8 +20,7 @@ export default class Draw {
   }
 
   line(
-      {coords, color, opacity, mouse, dpiW, translateX, withCircles, visibleItemsCount}
-          : LineOptions) {
+      {coords, color, opacity, mouse, dpiW, translateX, withCircles, visibleItemsCount}: LineOptions) {
     this.c.beginPath();
     this.c.save();
     this.c.translate(translateX!, 0);
@@ -65,8 +64,7 @@ export default class Draw {
   }
 
   yAxis(
-      {dpiW, viewH, yMax, yMin, margin, delta, rowsCount = 5}
-          : YAxisOptions) {
+      {dpiW, viewH, yMax, yMin, margin, delta, rowsCount = 5}: YAxisOptions) {
     this.setContextStyles();
 
     const step = Math.round(viewH / rowsCount);
@@ -98,8 +96,7 @@ export default class Draw {
   }
 
   xAxis(
-      {data, datasets, visibleItemsLength, dpiW, dpiH, xRatio, mouse, margin, translateX}
-          : XAxisOptions) {
+      {data, datasets, visibleItemsLength, dpiW, dpiH, xRatio, mouse, margin, translateX}: XAxisOptions) {
     this.setContextStyles();
     this.c.strokeStyle = this.theme.gridActiveLineColor;
 

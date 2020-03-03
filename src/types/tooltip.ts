@@ -18,8 +18,7 @@ export default class Tooltip extends Vue {
     })
   }
 
-  show({top, left}
-           : { top: number, left: number }, data: ShowData) {
+  show({top, left}: { top: number; left: number }, data: ShowData) {
     if (!Object.keys(data).length) {
       return
     }

@@ -30,7 +30,7 @@ export default class SliderChart extends BaseChart {
     this.$wrap.addEventListener('mousedown', this.mouseDownHandler);
     document.addEventListener('mouseup', this.mouseUpHandler);
 
-    const defaultWidth = this.w * 0.3;; // 30% by default
+    const defaultWidth = this.w * 0.3; // 30% by default
     this.setPosition(0, this.w - defaultWidth);
   }
 
@@ -61,14 +61,17 @@ export default class SliderChart extends BaseChart {
         if (delta === 0) {
           return
         }
+
         const left = dimension.left - delta;
         const right = this.w - left - dimension.width;
+
         this.setPosition(left, right);
         this.trigger();
       }
     } else if (type === 'left' || type === 'right') {
       const zoomWidth = dimension.width;
       const startX = event.pageX;
+
       document.onmousemove = e => {
         const delta = startX - e.pageX;
         if (delta === 0) {
@@ -90,6 +93,7 @@ export default class SliderChart extends BaseChart {
   setPosition(left: number, right: number) {
     const width = this.w - right - left;
     const minWidth = this.w * 0.05; // 5% of full width
+
     if (width < minWidth) {
       this.$window.style.width = `${minWidth}px`;
       return

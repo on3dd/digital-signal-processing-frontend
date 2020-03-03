@@ -39,8 +39,7 @@ export function getBoundary(datasets: Array<Dataset>) {
 }
 
 export function computeRatio(
-    {pos, viewH, viewW, length, delta}
-        : ComputeOptions): [number, number] {
+    {pos, viewH, viewW, length, delta}: ComputeOptions): [number, number] {
   const percent = (pos.right - pos.left) / 100;
 
   const xRatio = viewW / percent / (length - 2);
@@ -50,8 +49,7 @@ export function computeRatio(
 }
 
 export function getCoordinates(
-    {data, yMin, viewH, xRatio, yRatio, margin}
-        : CoordinatesOptions): number[][] {
+    {data, yMin, viewH, xRatio, yRatio, margin}: CoordinatesOptions): number[][] {
   return data.map((value, index) => {
     const y = Math.floor(viewH - ((parseInt(value) - yMin) / yRatio));
     const x = Math.floor((index) * xRatio);
@@ -80,8 +78,7 @@ export function css(el: HTMLElement, styles: Map = {}) {
 export function noop() {
 }
 
-export function computeDy({max, min, oldMax, speed}
-                              : { max: number, min: number, oldMax: number, speed: number }) {
+export function computeDy({max, min, oldMax, speed}: { max: number; min: number; oldMax: number; speed: number }) {
   const delta = max - oldMax;
   return Math.abs(delta) > (max - min) / speed
       ? delta / speed
