@@ -21,12 +21,12 @@
 
   @Component
   export default class ChartNavigation extends Chart {
-    protected left!: HTMLElement;
-    protected zoom!: HTMLElement;
-    protected right!: HTMLElement;
+    // protected left!: HTMLElement;
+    // protected zoom!: HTMLElement;
+    // protected right!: HTMLElement;
 
     protected get zoomWidth(): number {
-      return Math.round(this.dpiW * 3 / 10);
+      return Math.round(this.canvas.width * 3 / 10);
     }
 
     protected init() {
@@ -39,9 +39,9 @@
       this.context = context;
       this.canvasPlaceholder = document.getElementsByClassName(this.parent)[0] as HTMLElement;
 
-      this.left = document.getElementsByClassName('control-left')[0] as HTMLElement;
-      this.zoom = document.getElementsByClassName('zoom-window')[0] as HTMLElement;
-      this.right = document.getElementsByClassName('control-right')[0] as HTMLElement;
+      // this.left = document.getElementsByClassName('control-left')[0] as HTMLElement;
+      // this.zoom = document.getElementsByClassName('zoom-window')[0] as HTMLElement;
+      // this.right = document.getElementsByClassName('control-right')[0] as HTMLElement;
 
       this.resize();
       window.addEventListener("resize", this.resize);
@@ -61,34 +61,34 @@
       console.log("View:", this.viewH, this.viewW);
 
       this.computeRatio();
+      // this.setZoomPosition(this.canvas.width - this.zoomWidth, 0);
       this.drawPoints();
-      this.setZoomPosition(this.canvas.width - this.zoomWidth, 0);
     }
 
-    setZoomPosition(left: number, right: number) {
-      if (
-          left <= 0 ||
-          right < 0 ||
-          (left + this.zoomWidth) > this.dpiW ||
-          this.zoomWidth <= 10
-      ) {
-        return
-      }
-
-      console.log("Zoom:", this.zoomWidth);
-      console.log("Left:", left);
-      console.log("Right:", right);
-      console.log(this.left);
-      console.log(this.zoom);
-      console.log(this.right);
-
-      this.zoom.style.width = `${this.zoomWidth}px`
-      this.zoom.style.left = `${left}px`
-      this.zoom.style.right = `${right}px`
-
-      this.left.style.width = `${left}px`
-      this.right.style.width = `${right}px`
-    }
+    // setZoomPosition(left: number, right: number) {
+    //   if (
+    //       left <= 0 ||
+    //       right < 0 ||
+    //       (left + this.zoomWidth) > this.dpiW ||
+    //       this.zoomWidth <= 10
+    //   ) {
+    //     return
+    //   }
+    //
+    //   console.log("Zoom:", this.zoomWidth);
+    //   console.log("Left:", left);
+    //   console.log("Right:", right);
+    //   console.log(this.left);
+    //   console.log(this.zoom);
+    //   console.log(this.right);
+    //
+    //   this.zoom.style.width = `${this.zoomWidth}px`
+    //   this.zoom.style.left = `${left}px`
+    //   this.zoom.style.right = `${right}px`
+    //
+    //   this.left.style.width = `${left}px`
+    //   this.right.style.width = `${right}px`
+    // }
   }
 </script>
 

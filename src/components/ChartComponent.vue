@@ -27,6 +27,10 @@
     @Mutation updateCoordinates!: (coordinates: MouseCoordinates) => void;
     @Mutation updateVisibility!: (isVisible: boolean) => void;
 
+    protected left!: HTMLElement;
+    protected zoom!: HTMLElement;
+    protected right!: HTMLElement;
+
     protected readonly linesNum = 5;
     protected isReady = false;
 
@@ -43,6 +47,10 @@
       this.canvasPlaceholder = document.getElementsByClassName(this.parent)[0] as HTMLElement;
       this.isReady = true;
 
+      this.left = document.getElementsByClassName('control-left')[0] as HTMLElement;
+      this.zoom = document.getElementsByClassName('zoom-window')[0] as HTMLElement;
+      this.right = document.getElementsByClassName('control-right')[0] as HTMLElement;
+
       this.resize();
       window.addEventListener("resize", this.resize);
     }
@@ -57,8 +65,51 @@
       this.viewW = this.canvas.width;
       this.viewH = this.canvas.height;
 
+      console.log("DPI:", this.dpiH, this.dpiW);
+      console.log("View:", this.viewH, this.viewW);
+
       this.computeRatio();
+      this.setZoomPosition(this.canvas.width - this.zoomWidth, 0);
       this.redraw();
+    }
+
+    setZoomPosition(left: number, right: number) {
+      if (
+          left <= 0 ||
+          right < 0 ||
+          (left + this.zoomWidth) > this.dpiW ||
+          this.zoomWidth <= 10
+      ) {
+        return
+      }
+
+      console.log("Zoom:", this.zoomWidth);
+      console.log("Left:", left);
+      console.log("Right:", right);
+      console.log(this.left);
+      console.log(this.zoom);
+      console.log(this.right);
+
+      this.zoom.style.width = `${this.zoomWidth}px`
+      this.zoom.style.left = `${left}px`
+      this.zoom.style.right = `${right}px`
+
+      this.left.style.width = `${left}px`
+      this.right.style.width = `${right}px`
+    }
+
+    protected get zoomWidth(): number {
+      return Math.round(this.canvas.width * 3 / 10);
+    }
+
+    protected get zoomPosition(): object {
+      const leftPx = parseInt(this.left.style.width);
+      const rightPx = this.canvas.width - parseInt(this.right.style.width);
+
+      return [
+        leftPx * 100 / this.canvas.width,
+        rightPx * 100 / this.canvas.width
+      ]
     }
 
     protected redraw(idx?: number, mouseover?: boolean) {
