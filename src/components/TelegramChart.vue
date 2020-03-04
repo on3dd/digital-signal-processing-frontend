@@ -1,46 +1,48 @@
 <template>
   <div class="tg-chart">
-    <div v-if="isRendered">
-      <Tooltip :options="{left: 0, right: 0, theme}"/>
-      <DetailChart :options="{
-        // el: this.$detail,
+    <Tooltip :options="{
+        left: 0,
+        right: 0,
+        theme
+      }" ref="tooltip"/>
+    <DetailChart :options="{
+        name: 'chart',
         width: w,
         height: h,
         // tooltip: tooltip,
         data: data,
         animationSpeed: animationSpeed,
         theme
-      }"/>
-      <SliderChart :options="{
-        // el: this.$slider,
-        width: this.w,
-        data: this.data,
+      }" ref="detail"/>
+    <SliderChart :options="{
+        name: 'slider-chart',
+        width: w,
+        height: 40,
+        data: data,
         onUpdate: updateChart,
-        theme: this.theme,
-        height: 40
-    }"/>
-      <div data-el="labels"></div>
-    </div>
+        theme
+    }" ref="slider"/>
+    <div ref="labels"></div>
   </div>
 </template>
 
 <script lang="ts">
   import {Component, Prop, Vue} from "vue-property-decorator";
-  import DetailChart from "../components/DetailChart.vue";
-  import SliderChart from "../components/SliderChart.vue";
-  import Options from "../types/options";
-  import themes from "@/themes";
-  import {DataItem, TransformedData} from "@/types/data";
-  import Theme from "@/types/theme";
+  import DetailChart from "@/components/DetailChart.vue";
+  import SliderChart from "@/components/SliderChart.vue";
   import Tooltip from '@/components/Tooltip.vue';
-  import {css} from "@/utils";
+  import Options from "../types/options";
+  import {TransformedData} from "@/types/data";
+  import Theme from "@/types/theme";
   import Label from '@/types/label';
+  import themes from "@/themes";
+  import {css} from "@/utils";
 
   @Component({
     components: {
+      Tooltip,
       DetailChart,
       SliderChart,
-      Tooltip
     }
   })
   export default class TelegramChart extends Vue {
@@ -53,14 +55,18 @@
     protected h!: number;
     protected animationSpeed!: number;
     protected activeLabels!: string[];
-    protected tooltip!: Tooltip;
+    // protected tooltip!: Tooltip;
     protected prevState!: { left?: number; right?: number; labelsLength?: number };
 
-    private isRendered = false;
+    // private isRendered = false;
 
-    protected $detail!: HTMLElement;
-    protected $slider!: HTMLElement;
-    protected $labels!: HTMLElement;
+    public $refs!: Vue['$refs'] & {
+      // TODO: Fix types
+      tooltip: any;
+      detail: any;
+      slider: any;
+      labels: any;
+    };
 
     created() {
       console.log('TelegramChart created');
@@ -70,63 +76,39 @@
       this.w = this.options.width || 500;
       this.h = this.options.height || 300;
       this.animationSpeed = this.options.animationSpeed || 15;
+
+      console.log("TelegramChart size:", this.w, this.h);
     }
 
     mounted() {
       console.log('TelegramChart mounted');
 
       this.wrap = document.querySelector('.tg-chart') as HTMLElement;
-      console.log(this.wrap);
+      // console.log(this.wrap);
+
+      console.log("$refs:", this.$refs);
 
       this.prepare();
       this.init();
 
-      this.isRendered = true;
+      // this.isRendered = true;
     }
 
     prepare() {
       this.labelClickHandler = this.labelClickHandler.bind(this);
-      // this.updateChart = this.updateChart.bind(this);
+      this.updateChart = this.updateChart.bind(this);
 
       this.activeLabels = this.data.datasets!.map(set => set.name);
-      // this.tooltip = new Tooltip([wrap.querySelector('[data-el=tooltip]'), this.theme]);
       this.prevState = {};
-
-      // this.$detail = this.wrap.querySelector('[data-el=detail]')! as HTMLElement;
-      // this.$slider = this.wrap.querySelector('[data-el=slider]')! as HTMLElement;
-      // this.$labels = this.wrap.querySelector('[data-el=labels]')! as HTMLElement;
-
-      console.log(this.$detail);
-      console.log(this.$slider);
-      console.log(this.$labels);
     }
 
     init() {
       document.body.classList.add('tg-chart-preload');
-      // this.$labels.addEventListener('click', this.labelClickHandler);
+      this.$refs.labels.addEventListener('click', this.labelClickHandler);
 
-      // this.slider = new SliderChart({
-      //   el: this.$slider,
-      //   width: this.w,
-      //   data: this.data,
-      //   onUpdate: this.updateChart,
-      //   theme: this.theme,
-      //   height: 40
-      // });
-
-      // this.chart = new DetailChart({
-      //   el: this.$detail,
-      //   width: this.w,
-      //   height: this.h,
-      //   tooltip: this.tooltip,
-      //   data: this.data,
-      //   animationSpeed: this.animationSpeed,
-      //   theme: this.theme
-      // });
-
-      // this.updateTheme();
-      // this.updateChart();
-      // this.renderLabels();
+      this.updateTheme();
+      this.updateChart();
+      this.renderLabels();
 
       // Preventing initial css animations
       setTimeout(() => {
@@ -140,31 +122,39 @@
     }
 
     updateTheme() {
-      // this.slider.updateTheme(this.theme)
-      // this.tooltip.updateTheme(this.theme)
-      // this.chart.updateTheme(this.theme)
-      // this.$labels.querySelectorAll('.tg-chart-checkbox').forEach($label => {
-      //   css($label as HTMLElement, {
-      //     color: this.theme.checkboxColor,
-      //     borderColor: this.theme.checkboxBorder
-      //   })
-      // })
+      console.log("TelegramChart updateTheme fired");
+      this.$refs.slider.updateTheme(this.theme);
+      this.$refs.tooltip.updateTheme(this.theme);
+      this.$refs.detail.updateTheme(this.theme);
+      this.$refs.labels.querySelectorAll('.tg-chart-checkbox').forEach(($label: HTMLElement) => {
+        css($label, {
+          color: this.theme.checkboxColor,
+          borderColor: this.theme.checkboxBorder
+        })
+      })
     }
 
-    // renderLabels() {
-    //   const labels = this.data.datasets!.map(set => new Label(set).toHtml()).join(' ');
-    //   this.$labels.insertAdjacentHTML('afterbegin', labels);
-    // }
+    renderLabels() {
+      const labels = this.data.datasets!.map(set => new Label(set).toHtml()).join(' ');
+      console.log("labels:", labels);
+      this.$refs.labels.insertAdjacentHTML('afterbegin', labels);
+    }
 
-    // updateChart() {
-    //   if (this.shouldChartUpdate()) {
-    //     const [left, right] = this.slider.position;
-    //     this.prevState = {left, right, labelsLength: this.activeLabels.length};
-    //     this.chart.updatePosition({left, right});
-    //   }
-    // }
+    updateChart() {
+      console.log("updateChart fired");
+      if (this.shouldChartUpdate()) {
+        const [left, right] = this.$refs.slider.position;
+        console.log("Left:", left, "Right:", right);
 
-    labelClickHandler({target}: { target: HTMLElement }) {
+        this.prevState = {left, right, labelsLength: this.activeLabels.length};
+        console.log("prevState:", this.prevState);
+
+        this.$refs.detail.updatePosition({left, right});
+      }
+    }
+
+    labelClickHandler({target}: { target: HTMLElement & HTMLInputElement }) {
+      console.log("labelClickHandler fired");
       if (target.tagName.toLowerCase() !== 'input') {
         return
       }
@@ -180,22 +170,24 @@
         target.checked = !target.checked;
       }
 
-      // if (this.shouldChartUpdate()) {
-      //   this.prevState.labelsLength = this.activeLabels.length;
-      //
-      //   this.slider.update(this.getData());
-      //   this.chart.update({type, name: target.value, labels: this.activeLabels});
-      // }
+      if (this.shouldChartUpdate()) {
+        console.log("shouldChartUpdate = true");
+        this.prevState.labelsLength = this.activeLabels.length;
+
+        this.$refs.slider.update(this.getData());
+        this.$refs.detail.update({type, name: target.value, labels: this.activeLabels});
+      }
     }
 
-    // shouldChartUpdate() {
-    //   const [left, right] = this.slider.position;
-    //   return this.prevState.left !== left
-    //       || this.prevState.right !== right
-    //       || this.prevState.labelsLength !== this.activeLabels.length
-    // }
+    shouldChartUpdate() {
+      const [left, right] = this.$refs.slider.position;
+      return this.prevState.left !== left
+          || this.prevState.right !== right
+          || this.prevState.labelsLength !== this.activeLabels.length
+    }
 
     getData() {
+      console.log("getData fired");
       return {
         datasets: this.data.datasets!.filter(set => this.activeLabels.includes(set.name)),
         labels: this.data.labels!.concat()

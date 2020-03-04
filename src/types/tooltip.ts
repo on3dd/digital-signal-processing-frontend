@@ -9,6 +9,7 @@ export default class Tooltip extends Vue {
   @Prop({type: Object, required: true}) theme!: Theme;
 
   updateTheme(theme: Theme) {
+    console.log("Tooltip updateTheme fired");
     css(this.$el, {
       background: theme.tooltipBackground,
       borderColor: theme.tooltipBorder,

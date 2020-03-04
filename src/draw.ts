@@ -21,6 +21,7 @@ export default class Draw {
 
   line(
       {coords, color, opacity, mouse, dpiW, translateX, withCircles, visibleItemsCount}: LineOptions) {
+    console.log("line fired");
     this.c.beginPath();
     this.c.save();
     this.c.translate(translateX!, 0);
@@ -36,7 +37,7 @@ export default class Draw {
 
     if (withCircles) {
       for (let i = 0; i < coords.length; i++) {
-        if (isMouseOver(coords[i][0], mouse, translateX, dpiW, visibleItemsCount)) {
+        if (isMouseOver(coords[i][0], mouse!, translateX!, dpiW, visibleItemsCount!)) {
           this.circle(coords[i] as [number, number], color);
           break;
         }
@@ -108,8 +109,8 @@ export default class Draw {
     const columnsCount = 6;
 
     const labelWidth = Math.round(dpiW / 7);
-    const every = Math.floor(data.labels.length / 6);
-    const visibleIdxs = [0, every, every * 2, every * 3, every * 4 - 1, every * 5 - 2, every * 6 - 3]
+    const every = Math.floor(data.labels!.length / columnsCount);
+    const visibleIdxs = [0, every, every * 2, every * 3, every * 4 - 1, every * 5 - 2, every * 6 - 3];
 
     let nextStart = 0;
     let prevEnd = 0;
@@ -119,9 +120,9 @@ export default class Draw {
 
     const colorSetter = this.getColorSetter(this.theme.gridTextColor);
 
-    for (let i = 0; i < data.labels.length; i++) {
+    for (let i = 0; i < data.labels!.length; i++) {
       const x = Math.floor(i * xRatio);
-      const text = toDate(data.labels[i]);
+      const text = toDate(data.labels![i]);
 
       if (visibleIdxs.includes(i)) {
         if (a[count]) {
@@ -170,14 +171,14 @@ export default class Draw {
         a[count].push({x, text});
       }
 
-      if (!isMouseOver(x, mouse, translateX, dpiW, visibleItemsLength)) {
+      if (!isMouseOver(x, mouse!, translateX, dpiW, visibleItemsLength)) {
         continue;
       }
 
-      this.c.save()
-      this.c.moveTo(x, margin)
-      this.c.lineTo(x, dpiH - margin)
-      this.c.restore()
+      this.c.save();
+      this.c.moveTo(x, margin);
+      this.c.lineTo(x, dpiH - margin);
+      this.c.restore();
 
       this.tooltip.show(mouse.tooltip, {
         title: toDate(data.labels[i], true),
@@ -186,7 +187,9 @@ export default class Draw {
           color: set.color,
           value: set.data[i]
         }))
-      })
+      });
+
+      console.log("a:", a);
     }
 
     this.c.restore();

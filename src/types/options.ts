@@ -5,7 +5,7 @@ import {Dataset, TransformedData} from "@/types/data";
 import Mouse from "@/types/mouse";
 
 export default interface Options {
-  el?: HTMLElement;
+  name: string;
   width: number;
   height: number;
   tooltip?: Tooltip;
@@ -54,7 +54,7 @@ export interface YAxisOptions {
 }
 
 export interface XAxisOptions {
-  data: object;
+  data: TransformedData;
   visibleItemsLength: number;
   datasets: Dataset[];
   dpiW: number;

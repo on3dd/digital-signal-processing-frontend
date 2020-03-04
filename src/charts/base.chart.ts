@@ -10,7 +10,8 @@ import Mouse from "@/types/mouse";
 export default class BaseChart extends Vue {
   @Prop({type: Object, required: true}) options!: Options;
 
-  public $el!: HTMLCanvasElement;
+  protected name!: string;
+  protected cvs!: HTMLCanvasElement;
   protected c!: CanvasRenderingContext2D;
   protected w!: number;
   protected h!: number;
@@ -35,8 +36,8 @@ export default class BaseChart extends Vue {
 
   protected raf!: number;
 
-  mounted() {
-    this.c = this.$el.getContext('2d')!;
+  created() {
+    this.name = this.options.name;
     this.w = this.options.width;
     this.h = this.options.height;
     this.tooltip = this.options.tooltip!;
@@ -44,30 +45,40 @@ export default class BaseChart extends Vue {
     this.trigger = this.options.onUpdate || noop;
     this.animationSpeed = this.options.animationSpeed || 15;
 
-    css(this.$el, {
-      width: `${this.w}px`,
-      height: `${this.h}px`
-    });
-
     this.dpiW = this.w * 2;
     this.dpiH = this.h * 2;
     this.viewW = this.dpiW;
     this.viewH = this.dpiH;
-    this.$el.width = this.dpiW;
-    this.$el.height = this.dpiH;
-    this.draw = new Draw(this.c, this.tooltip, this.options.theme!);
     this.mouse = null;
+  }
+
+  mounted() {
+    this.cvs = document.getElementById(this.name) as HTMLCanvasElement;
+    this.c = this.cvs.getContext('2d')!;
+
+    this.cvs.width = this.dpiW;
+    this.cvs.height = this.dpiH;
+
+    css(this.cvs, {
+      width: `${this.w}px`,
+      height: `${this.h}px`
+    });
+
+    this.draw = new Draw(this.c, this.tooltip, this.options.theme!);
 
     this.prepare();
     this.init();
-    this.raf = requestAnimationFrame(this.render)
+    this.raf = requestAnimationFrame(this.renderFunc as FrameRequestCallback);
   }
 
   protected prepare() {
-    this.render = this.render.bind(this)
+    // return
+    this.renderFunc = this.renderFunc.bind(this)
   }
 
-  protected init() { return }
+  protected init() {
+    return
+  }
 
   protected setup() {
     const [min, max] = getBoundary(this.data.datasets!);
@@ -91,11 +102,13 @@ export default class BaseChart extends Vue {
 
   // updateTheme(theme) {}
 
-  protected render() {
+  renderFunc() {
+    console.log("render fired");
     this.clear();
     this.setup();
 
     const {yMin, viewH, xRatio, yRatio, mouse, dpiW} = this;
+    console.log("render data:", yMin, viewH, xRatio, yRatio, mouse, dpiW);
 
     this.data.datasets!.forEach(({data, color}) => {
       const coords = getCoordinates({data, yMin, viewH, xRatio, yRatio, margin: 0});

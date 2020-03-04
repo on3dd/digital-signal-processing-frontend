@@ -1,13 +1,15 @@
 <template>
-  <div class="tooltip" v-if="data !== undefined">
-    <div class="tooltip-title">{{data.title}}</div>
-    <ul class="tooltip-list">
-      <li class="tooltip-list-item" v-for="(item, key) in data.items" :key="key">
-        <div class="value" :style="{color: item.color}">{{item.value}}</div>
-        <div class="name" :style="{color: item.color}">{{item.name}}</div>
-      </li>
-    </ul>
-  </div>
+  <div class="tooltip">
+    <div v-if="data !== undefined">
+      <div class="tooltip-title">{{data.title}}</div>
+      <ul class="tooltip-list">
+        <li class="tooltip-list-item" v-for="(item, key) in data.items" :key="key">
+          <div class="value" :style="{color: item.color}">{{item.value}}</div>
+          <div class="name" :style="{color: item.color}">{{item.name}}</div>
+        </li>
+      </ul>
+    </div>
+    </div>
 </template>
 
 <script lang="ts">
@@ -32,13 +34,18 @@
     created() {
       this.top = this.options.top;
       this.left = this.options.left;
-      this.data = this.options.data;
+      this.data = this.options.data!;
       this.theme = this.options.theme;
+    }
 
+    mounted() {
+      console.log("Tooltip mounted");
       this.tooltip = document.getElementsByClassName('tooltip')[0] as HTMLElement;
+      console.log(this.tooltip);
     }
 
     updateTheme(theme: Theme) {
+      console.log("Tooltip updateTheme fired");
       css(this.tooltip, {
         background: theme.tooltipBackground,
         borderColor: theme.tooltipBorder,

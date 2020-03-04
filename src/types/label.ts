@@ -1,9 +1,20 @@
-import {Component, Prop, Vue} from "vue-property-decorator";
+// import {Component, Prop, Vue} from "vue-property-decorator";
+import {Dataset} from "@/types/data";
 
-@Component
-export default class Label extends Vue {
-  @Prop({type: String, required: true}) name!: string;
-  @Prop({type: String, required: true}) color!: string;
+// @Component
+export default class Label{
+  // @Prop({type: Object, required: true}) set!: Dataset;
+  // @Prop({type: String, required: true}) name!: string;
+  // @Prop({type: String, required: true}) color!: string;
+
+  // set!: Dataset;
+  name!: string;
+  color!: string;
+
+  constructor(set: Dataset) {
+    this.name = set.name;
+    this.color = set.color;
+  }
 
   toHtml() {
     return `

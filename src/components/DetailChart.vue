@@ -10,11 +10,12 @@
   import {computeDy, computeRatio, getBoundary, getCoordinates} from "@/utils";
   import Lines from "@/types/lines";
   import Pos from "@/types/pos";
-  import {UpdateOptions} from "@/types/options";
   import Theme from "@/types/theme";
+  import {UpdateOptions} from "@/types/options";
 
   @Component
   export default class DetailChart extends BaseChart {
+    // protected cvs!: HTMLCanvasElement;
     lines!: Lines;
     margin!: number;
     activeLabels!: string[];
@@ -22,10 +23,12 @@
     max!: number | null;
     dy!: number | null;
 
-    protected proxy!: object;
-
     prepare() {
-      super.prepare();
+      // console.log("DetailChart size:", this.w, this.h);
+      // console.log("DetailChart cvs size:", this.cvs.width, this.cvs.height);
+      // console.log("DetailChart cvs:", this.cvs);
+      // console.log("DetailChart name:", this.name);
+
       this.lines = {};
       this.margin = 40;
       this.viewH = this.dpiH - this.margin * 2;
@@ -38,23 +41,23 @@
       this.max = null;
       this.dy = null;
 
-      // For optimization
-      this.proxy = new Proxy(this, {
-        set: (...options) => {
-          const result = Reflect.set(...options);
-          this.raf = requestAnimationFrame(this.render);
-          return result
-        }
-      });
+      // // For optimization
+      // this.proxy = new Proxy(this, {
+      //   set: (...options) => {
+      //     const result = Reflect.set(...options);
+      //     this.raf = window.requestAnimationFrame(this.render.bind(window));
+      //     return result
+      //   }
+      // });
 
-      this.render = this.render.bind(this);
+      this.renderFunc = this.renderFunc.bind(this);
       this.mouseMoveHandler = this.mouseMoveHandler.bind(this);
       this.mouseLeaveHandler = this.mouseLeaveHandler.bind(this);
     }
 
     init() {
-      this.$el.addEventListener('mousemove', this.mouseMoveHandler, true);
-      this.$el.addEventListener('mouseleave', this.mouseLeaveHandler);
+      this.cvs.addEventListener('mousemove', this.mouseMoveHandler, true);
+      this.cvs.addEventListener('mouseleave', this.mouseLeaveHandler);
     }
 
     get datasets() {
@@ -84,8 +87,10 @@
     }
 
     updatePosition(pos: Pos) {
+      console.log("updatePosition fired");
       // this.proxy.pos = pos
       this.pos = pos;
+      console.log("DetailChart pos:", this.pos);
     }
 
     update({type, name, labels}: UpdateOptions) {
@@ -103,6 +108,9 @@
 
       // this.proxy.activeLabels = labels
       this.activeLabels = labels;
+      console.log("DetailChart update fired");
+      console.log("lines:", this.lines);
+      console.log("activeLabels:", this.activeLabels);
     }
 
     setup() {
@@ -158,16 +166,17 @@
     }
 
     updateTheme(theme: Theme) {
+      console.log("DetailChart updateTheme fired");
       this.draw.theme = theme;
-      this.raf = requestAnimationFrame(this.render);
+      this.raf = requestAnimationFrame(this.renderFunc)
     }
 
-    render() {
+    renderFunc() {
       this.clear();
       this.setup();
 
       if (this.shouldAnimate()) {
-        this.raf = requestAnimationFrame(this.render)
+        this.raf = requestAnimationFrame(this.renderFunc)
       }
 
       this.draw.yAxis({
@@ -237,11 +246,11 @@
     mouseLeaveHandler() {
       // this.proxy.mouse = null;
       this.mouse = null;
-      this.tooltip.hide();
+      // this.tooltip.hide();
     }
 
     mouseMoveHandler({clientX, clientY}: { clientX: number; clientY: number }) {
-      const {left, top} = this.$el.getBoundingClientRect();
+      const {left, top} = this.cvs.getBoundingClientRect();
       // this.proxy.mouse = {
       //   x: (clientX - left) * 2,
       //   tooltip: {
@@ -260,8 +269,8 @@
 
     destroy() {
       super.destroy();
-      this.$el.removeEventListener('mousemove', this.mouseMoveHandler);
-      this.$el.removeEventListener('mouseleave', this.mouseLeaveHandler);
+      this.cvs.removeEventListener('mousemove', this.mouseMoveHandler);
+      this.cvs.removeEventListener('mouseleave', this.mouseLeaveHandler);
     }
   }
 </script>

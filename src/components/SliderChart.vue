@@ -17,8 +17,9 @@
   import {Component, Prop} from "vue-property-decorator";
   import BaseChart from "@/charts/base.chart";
   import Theme from "@/types/theme";
-  import {css} from "@/utils";
   import {TransformedData} from "@/types/data";
+  import {css} from "@/utils";
+  import Draw from "@/draw";
 
   @Component
   export default class SliderChart extends BaseChart {
@@ -32,7 +33,13 @@
     // }
 
     prepare() {
-      super.prepare();
+      // console.log("SliderChart size:", this.w, this.h);
+      // console.log("SliderChart cvs size:", this.cvs.width, this.cvs.height);
+      // console.log("SliderChart cvs:", this.cvs);
+      // console.log("SliderChart name:", this.name);
+
+      this.renderFunc = this.renderFunc.bind(this);
+
       this.$wrap = this.$el.parentElement!;
       this.mouseDownHandler = this.mouseDownHandler.bind(this);
       this.mouseUpHandler = this.mouseUpHandler.bind(this);
@@ -51,6 +58,7 @@
     }
 
     updateTheme(theme: Theme) {
+      console.log("SliderChart updateTheme fired");
       css(this.$left, {background: theme.sliderBackground});
       css(this.$right, {background: theme.sliderBackground});
       css(this.$right.querySelector('[data-el=arrow]')! as HTMLElement, {background: theme.sliderArrow});
@@ -59,7 +67,8 @@
 
     update(data: TransformedData) {
       this.data = data;
-      this.render()
+      console.log("SliderChart update fired, data:", this.data);
+      this.renderFunc;
     }
 
     mouseDownHandler(event: any) {

@@ -32,6 +32,8 @@
 
 <style lang="scss">
   @import "./scss/main";
+  @import "./scss/index";
+
   #app {
     display: flex;
     flex-direction: column;
