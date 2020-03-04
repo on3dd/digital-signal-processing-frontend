@@ -14,12 +14,13 @@
 </template>
 
 <script lang="ts">
-  import {Component, Prop} from "vue-property-decorator";
+  import {Component, Prop, Vue} from "vue-property-decorator";
   import BaseChart from "@/charts/base.chart";
   import Theme from "@/types/theme";
   import {TransformedData} from "@/types/data";
   import {css} from "@/utils";
   import Draw from "@/draw";
+  import TelegramChart from "@/components/TelegramChart.vue";
 
   @Component
   export default class SliderChart extends BaseChart {
@@ -27,6 +28,9 @@
     protected $left!: HTMLElement;
     protected $window!: HTMLElement;
     protected $right!: HTMLElement;
+
+    // TODO: Fix types
+    public $parent!: any;
 
     // created() {
     //   super.created();
@@ -58,7 +62,7 @@
     }
 
     updateTheme(theme: Theme) {
-      console.log("SliderChart updateTheme fired");
+      // console.log("SliderChart updateTheme fired");
       css(this.$left, {background: theme.sliderBackground});
       css(this.$right, {background: theme.sliderBackground});
       css(this.$right.querySelector('[data-el=arrow]')! as HTMLElement, {background: theme.sliderArrow});
@@ -68,10 +72,11 @@
     update(data: TransformedData) {
       this.data = data;
       console.log("SliderChart update fired, data:", this.data);
-      this.renderFunc;
+      this.renderFunc();
     }
 
     mouseDownHandler(event: any) {
+      // console.log("mouseDownHandler fired");
       const {type} = event.target!.dataset;
       const dimension = {
         left: parseInt(this.$window.style.left),
@@ -91,7 +96,8 @@
           const right = this.w - left - dimension.width;
 
           this.setPosition(left, right);
-          this.trigger();
+          // this.trigger();
+          this.$parent.updateChart();
         }
       } else if (type === 'left' || type === 'right') {
         const zoomWidth = dimension.width;
@@ -99,6 +105,7 @@
 
         document.onmousemove = e => {
           const delta = startX - e.pageX;
+          // console.log("zoomWidth:", zoomWidth, "startX", startX, "delta", delta, "dimension", dimension);
           if (delta === 0) {
             return
           }
@@ -110,7 +117,8 @@
             const right = this.w - (zoomWidth - delta) - dimension.left;
             this.setPosition(dimension.left, right);
           }
-          this.trigger();
+          // this.trigger();
+          this.$parent.updateChart();
         }
       }
     }
@@ -142,9 +150,14 @@
 
       this.$left.style.width = `${left}px`;
       this.$right.style.width = `${right}px`;
+
+      // console.log("setPosition fired");
+      // console.log("left:", left, this.$left.style.width);
+      // console.log("right:", left, this.$right.style.width);
     }
 
-    get position() {
+    position(): number[] {
+      // console.log("position getter fired");
       const leftPx = parseInt(this.$left.style.width);
       const rightPx = this.w - parseInt(this.$right.style.width);
 
@@ -155,6 +168,7 @@
     }
 
     mouseUpHandler() {
+      // console.log("mouseUpHandler fired");
       document.onmousemove = null;
     }
 

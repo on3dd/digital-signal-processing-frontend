@@ -62,10 +62,10 @@
 
     public $refs!: Vue['$refs'] & {
       // TODO: Fix types
-      tooltip: any;
-      detail: any;
-      slider: any;
-      labels: any;
+      tooltip: Tooltip;
+      detail: DetailChart;
+      slider: SliderChart;
+      labels: Label;
     };
 
     created() {
@@ -141,13 +141,12 @@
     }
 
     updateChart() {
-      console.log("updateChart fired");
+      // console.log("updateChart fired");
       if (this.shouldChartUpdate()) {
-        const [left, right] = this.$refs.slider.position;
-        console.log("Left:", left, "Right:", right);
+        const [left, right] = this.$refs.slider.position();
 
         this.prevState = {left, right, labelsLength: this.activeLabels.length};
-        console.log("prevState:", this.prevState);
+        // console.log("prevState:", this.prevState);
 
         this.$refs.detail.updatePosition({left, right});
       }
@@ -180,7 +179,8 @@
     }
 
     shouldChartUpdate() {
-      const [left, right] = this.$refs.slider.position;
+      const [left, right] = this.$refs.slider.position();
+      console.log("shouldChartUpdate, left:", left, "right:", right);
       return this.prevState.left !== left
           || this.prevState.right !== right
           || this.prevState.labelsLength !== this.activeLabels.length

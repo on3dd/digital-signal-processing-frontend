@@ -45,6 +45,8 @@ export default class BaseChart extends Vue {
     this.trigger = this.options.onUpdate || noop;
     this.animationSpeed = this.options.animationSpeed || 15;
 
+    console.log(this.trigger);
+
     this.dpiW = this.w * 2;
     this.dpiH = this.h * 2;
     this.viewW = this.dpiW;

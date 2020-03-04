@@ -21,7 +21,7 @@ export default class Draw {
 
   line(
       {coords, color, opacity, mouse, dpiW, translateX, withCircles, visibleItemsCount}: LineOptions) {
-    console.log("line fired");
+    // console.log("line fired");
     this.c.beginPath();
     this.c.save();
     this.c.translate(translateX!, 0);

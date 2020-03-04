@@ -87,10 +87,11 @@
     }
 
     updatePosition(pos: Pos) {
-      console.log("updatePosition fired");
+      // console.log("updatePosition fired");
       // this.proxy.pos = pos
       this.pos = pos;
       console.log("DetailChart pos:", this.pos);
+      this.raf = requestAnimationFrame(this.renderFunc);
     }
 
     update({type, name, labels}: UpdateOptions) {
