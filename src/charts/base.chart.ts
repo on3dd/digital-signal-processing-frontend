@@ -1,5 +1,5 @@
 import {Component, Prop, Vue} from 'vue-property-decorator';
-import {computeRatio, css, getBoundary, getCoordinates, noop} from '../utils'
+import {computeRatio, css, getBoundary, getCoordinates, noop} from '@/utils'
 import Draw from '@/draw'
 import Options from "@/types/options";
 import Tooltip from "@/types/tooltip";
@@ -35,7 +35,7 @@ export default class BaseChart extends Vue {
 
   protected raf!: number;
 
-  created() {
+  mounted() {
     this.c = this.$el.getContext('2d')!;
     this.w = this.options.width;
     this.h = this.options.height;
@@ -67,8 +67,7 @@ export default class BaseChart extends Vue {
     this.render = this.render.bind(this)
   }
 
-  protected init() {
-  }
+  protected init() { return }
 
   protected setup() {
     const [min, max] = getBoundary(this.data.datasets!);

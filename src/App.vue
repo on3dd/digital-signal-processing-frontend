@@ -32,18 +32,15 @@
 
 <style lang="scss">
   @import "./scss/main";
-
   #app {
     display: flex;
     flex-direction: column;
     align-items: center;
     padding: 3rem;
     /*min-height: 100vh;*/
-
     > h1 {
       text-align: center;
     }
-
     main {
       width: 100%;
     }
@@ -56,29 +53,23 @@
       }
     }
   }
-
   header {
     width: inherit;
     overflow-x: hidden;
-
     > nav {
       width: inherit;
       background-color: #fafafa;
-
       > ul {
         display: flex;
         padding: 1rem;
-
         li {
           font-size: inherit;
           padding: .5rem 1rem;
           transition: background-color .1s ease-out;
-
           a {
             text-decoration: none;
             color: inherit;
           }
-
           &:hover {
             background: rgba(0, 0, 0, .1);
           }

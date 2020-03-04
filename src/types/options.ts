@@ -1,14 +1,15 @@
 import Tooltip from "@/types/tooltip";
 import Theme from "@/types/theme";
 import Pos from "@/types/pos";
-import {Dataset} from "@/types/data";
+import {Dataset, TransformedData} from "@/types/data";
 import Mouse from "@/types/mouse";
 
 export default interface Options {
+  el?: HTMLElement;
   width: number;
   height: number;
   tooltip?: Tooltip;
-  data?: object;
+  data?: TransformedData;
   onUpdate?: Function;
   animationSpeed?: number;
   theme?: Theme;

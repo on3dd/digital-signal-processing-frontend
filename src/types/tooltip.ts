@@ -5,9 +5,8 @@ import {ShowData} from "@/types/data";
 
 @Component
 export default class Tooltip extends Vue {
+  @Prop({type: HTMLElement, required: true}) $el!: HTMLElement;
   @Prop({type: Object, required: true}) theme!: Theme;
-
-  public $el!: HTMLElement;
 
   updateTheme(theme: Theme) {
     css(this.$el, {

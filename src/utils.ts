@@ -70,13 +70,11 @@ export function toDate(timestamp: string, withDay: boolean) {
 
 export function css(el: HTMLElement, styles: Map = {}) {
   Object.keys(styles).forEach((style: string) => {
-    // @ts-ignore
     el.style[style] = styles[style]
   })
 }
 
-export function noop() {
-}
+export function noop() { return }
 
 export function computeDy({max, min, oldMax, speed}: { max: number; min: number; oldMax: number; speed: number }) {
   const delta = max - oldMax;
