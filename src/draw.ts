@@ -1,9 +1,7 @@
-// import {Component, Prop, Vue} from 'vue-property-decorator';
 import {getRgbValue, hexToRgb, isMouseOver, toDate} from './utils'
 import {LineOptions, XAxisOptions, YAxisOptions} from "@/types/options";
 import Theme from "@/types/theme";
 
-// @Component
 export default class Draw {
   c: CanvasRenderingContext2D;
   tooltip: object;
@@ -25,7 +23,7 @@ export default class Draw {
     this.c.beginPath();
     this.c.save();
     this.c.translate(translateX!, 0);
-    this.c.moveTo(coords[0][1], coords[0][1]);
+    this.c.moveTo(coords[0][0], coords[0][1]);
 
     this.c.lineWidth = this.theme.lineWidth;
     this.c.strokeStyle = hexToRgb(color, opacity);

@@ -76,7 +76,6 @@
     }
 
     mouseDownHandler(event: any) {
-      // console.log("mouseDownHandler fired");
       const {type} = event.target!.dataset;
       const dimension = {
         left: parseInt(this.$window.style.left),
@@ -94,6 +93,9 @@
 
           const left = dimension.left - delta;
           const right = this.w - left - dimension.width;
+
+          // console.log("startX:", startX, "delta:", delta);
+          // console.log("left:", left, "right:", right);
 
           this.setPosition(left, right);
           // this.trigger();

@@ -180,7 +180,7 @@
 
     shouldChartUpdate() {
       const [left, right] = this.$refs.slider.position();
-      console.log("shouldChartUpdate, left:", left, "right:", right);
+      // console.log("shouldChartUpdate, left:", left, "right:", right);
       return this.prevState.left !== left
           || this.prevState.right !== right
           || this.prevState.labelsLength !== this.activeLabels.length

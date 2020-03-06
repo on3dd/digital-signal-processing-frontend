@@ -58,6 +58,7 @@
       if (!Object.keys(this.data!).length) {
         return
       }
+      console.log("Tooltip show fired");
 
       const {height, width} = this.tooltip.getBoundingClientRect();
       css(this.tooltip, {
