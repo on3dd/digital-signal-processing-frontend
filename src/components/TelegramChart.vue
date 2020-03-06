@@ -136,7 +136,7 @@
 
     renderLabels() {
       const labels = this.data.datasets!.map(set => new Label(set).toHtml()).join(' ');
-      console.log("labels:", labels);
+      // console.log("labels:", labels);
       this.$refs.labels.insertAdjacentHTML('afterbegin', labels);
     }
 

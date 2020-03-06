@@ -178,16 +178,14 @@ export default class Draw {
       this.c.lineTo(x, dpiH - margin);
       this.c.restore();
 
-      this.tooltip.show(mouse.tooltip, {
-        title: toDate(data.labels[i], true),
-        items: datasets.map(set => ({
-          name: set.name,
-          color: set.color,
-          value: set.data[i]
-        }))
-      });
-
-      console.log("a:", a);
+      // this.tooltip.show(mouse.tooltip, {
+      //   title: toDate(data.labels[i], true),
+      //   items: datasets.map(set => ({
+      //     name: set.name,
+      //     color: set.color,
+      //     value: set.data[i]
+      //   }))
+      // });
     }
 
     this.c.restore();

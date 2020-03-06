@@ -15,13 +15,12 @@
 
   @Component
   export default class DetailChart extends BaseChart {
-    // protected cvs!: HTMLCanvasElement;
-    lines!: Lines;
-    margin!: number;
-    activeLabels!: string[];
-    pos!: { left: number; right: number };
-    max!: number | null;
-    dy!: number | null;
+    protected lines!: Lines;
+    protected margin!: number;
+    protected activeLabels!: string[];
+    protected pos!: { left: number; right: number };
+    protected max!: number | null;
+    protected dy!: number | null;
 
     prepare() {
       // console.log("DetailChart size:", this.w, this.h);
@@ -40,15 +39,6 @@
       this.pos = {left: 0, right: 0};
       this.max = null;
       this.dy = null;
-
-      // // For optimization
-      // this.proxy = new Proxy(this, {
-      //   set: (...options) => {
-      //     const result = Reflect.set(...options);
-      //     this.raf = window.requestAnimationFrame(this.render.bind(window));
-      //     return result
-      //   }
-      // });
 
       this.renderFunc = this.renderFunc.bind(this);
       this.mouseMoveHandler = this.mouseMoveHandler.bind(this);
@@ -112,6 +102,7 @@
       console.log("DetailChart update fired");
       console.log("lines:", this.lines);
       console.log("activeLabels:", this.activeLabels);
+      this.renderFunc();
     }
 
     setup() {
