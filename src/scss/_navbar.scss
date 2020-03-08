@@ -1,0 +1,76 @@
+@mixin nav-item {
+  display: block;
+  margin: 0;
+  padding: .5rem 1rem;
+  font-size: inherit;
+  color: inherit;
+  cursor: pointer;
+  text-decoration: none;
+  border: 1px solid transparent;
+}
+
+nav {
+  width: inherit;
+  background-color: #fafafa;
+
+  .nav-links {
+    display: flex;
+    padding: 1rem;
+
+    &__item {
+      position: relative;
+      display: flex;
+      align-items: center;
+      font-size: inherit;
+      transition: background-color .1s ease-out;
+
+      &:hover {
+        background: darken(#fafafa, 5%);
+      }
+
+      a, .dropdown-header {
+        @include nav-item;
+      }
+
+      .dropdown-header {
+        border-bottom: none;
+
+        &.active {
+          border-color: rgba(0, 0, 0, .2);
+        }
+      }
+
+      .dropdown-body {
+        display: none;
+        background-color: #fafafa;
+        border: 1px solid transparent;
+
+        &.active {
+          display: flex;
+          flex-direction: column;
+          position: absolute;
+          top: 100%;
+          box-shadow: 0 10px 20px 0 rgba(0, 0, 0, .1);
+          border-color: rgba(0, 0, 0, .2);
+        }
+
+        &__item {
+          transition: background-color .1s ease-out;
+
+          &:hover {
+            background: darken(#fafafa, 5%);
+          }
+
+          span, label {
+            @include nav-item;
+            white-space: nowrap;
+          }
+
+          input[type=file] {
+            display: none;
+          }
+        }
+      }
+    }
+  }
+}
