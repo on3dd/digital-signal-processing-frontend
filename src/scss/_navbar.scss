@@ -22,7 +22,7 @@ nav {
       display: flex;
       align-items: center;
       font-size: inherit;
-      transition: background-color .1s ease-out;
+      //transition: background-color .1s ease-out;
 
       &:hover {
         background: darken(#fafafa, 5%);
@@ -55,7 +55,7 @@ nav {
         }
 
         &__item {
-          transition: background-color .1s ease-out;
+          //transition: background-color .1s ease-out;
 
           &:hover {
             background: darken(#fafafa, 5%);

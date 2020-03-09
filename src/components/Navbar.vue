@@ -38,7 +38,7 @@
       {to: '/', text: 'Фильтрация'},
       {to: '/', text: 'Анализ'},
       {to: '/', text: 'Настройки'},
-      {to: '/', text: 'Справка'},
+      {to: '/about', text: 'Справка'},
     ];
 
     private dropdownHeaders!: NodeListOf<Element>;
