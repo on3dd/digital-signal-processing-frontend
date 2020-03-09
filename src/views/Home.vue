@@ -6,7 +6,7 @@
 </template>
 
 <script lang="ts">
-  import TelegramChart from "@/components/TelegramChart.vue";
+  import TelegramChart from "@/components/charts/TelegramChart.vue";
   import {transformData} from '@/utils';
   import themes from '@/themes';
   import data from '@/data/chart_data.json'

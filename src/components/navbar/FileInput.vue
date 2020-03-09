@@ -21,7 +21,7 @@
 </script>
 
 <style scoped lang="scss">
-  @import "../scss/nav-item";
+  @import "../../scss/nav-item";
 
   div {
     label {

@@ -2,9 +2,9 @@ import Vue from 'vue'
 import App from './App.vue'
 import store from './store'
 import router from './router'
-import Axios from 'axios'
+import axios from 'axios'
 
-Vue.prototype.$http = Axios;
+Vue.prototype.$http = axios;
 Vue.config.productionTip = false;
 
 new Vue({

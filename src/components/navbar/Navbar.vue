@@ -24,7 +24,7 @@
 
 <script lang="ts">
   import {Component, Vue} from 'vue-property-decorator';
-  import FileInput from '../components/FileInput.vue'
+  import FileInput from './FileInput.vue'
 
   type RouterLink = {
     to: string;
@@ -80,7 +80,7 @@
 </script>
 
 <style scoped lang="scss">
-  @import "../scss/nav-item";
+  @import "../../scss/nav-item";
 
   nav {
     width: inherit;

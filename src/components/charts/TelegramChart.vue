@@ -28,10 +28,10 @@
 
 <script lang="ts">
   import {Component, Prop, Vue} from "vue-property-decorator";
-  import DetailChart from "@/components/DetailChart.vue";
-  import SliderChart from "@/components/SliderChart.vue";
+  import DetailChart from "@/components/charts/DetailChart.vue";
+  import SliderChart from "@/components/charts/SliderChart.vue";
   import Tooltip from '@/components/Tooltip.vue';
-  import Options from "../types/options";
+  import Options from "../../types/options";
   import {TransformedData} from "@/types/data";
   import Theme from "@/types/theme";
   import Label from '@/types/label';
