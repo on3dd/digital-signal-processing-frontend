@@ -1,5 +1,5 @@
 <template>
-  <div class="home">
+  <div class="app">
     <h1>Digital Signal Processing</h1>
     <TelegramChart :options="options"/>
   </div>
@@ -33,15 +33,7 @@
 </script>
 
 <style lang="scss" scoped>
-  .home {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: 3rem;
-    width: 100%;
-
-    > h1 {
-      text-align: center;
-    }
+  h1 {
+    text-align: center;
   }
 </style>

@@ -24,6 +24,14 @@
 
   main {
     width: 100%;
+
+    .app {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 3rem;
+      width: 100%;
+    }
   }
 
   header {
