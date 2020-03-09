@@ -5,8 +5,7 @@
         <div class="dropdown-header">Файл</div>
         <ul class="dropdown-body">
           <li class="dropdown-body__item">
-            <label for="file-input">Открыть</label>
-            <input id="file-input" name="file-input" type="file" accept="text/plain">
+            <file-input/>
           </li>
           <li class="dropdown-body__item">
             <span>Закрыть</span>
@@ -25,13 +24,18 @@
 
 <script lang="ts">
   import {Component, Vue} from 'vue-property-decorator';
+  import FileInput from '../components/FileInput.vue'
 
   type RouterLink = {
     to: string;
     text: string;
   }
 
-  @Component
+  @Component({
+    components: {
+      FileInput
+    }
+  })
   export default class Navbar extends Vue {
     private routerLinks: RouterLink[] = [
       {to: '/', text: 'Моделирование'},
@@ -76,5 +80,67 @@
 </script>
 
 <style scoped lang="scss">
-  @import "../scss/_navbar";
+  @import "../scss/nav-item";
+
+  nav {
+    width: inherit;
+    background-color: #fafafa;
+
+    .nav-links {
+      display: flex;
+      padding: 1rem;
+
+      &__item {
+        position: relative;
+        display: flex;
+        align-items: center;
+        font-size: inherit;
+        //transition: background-color .1s ease-out;
+
+        &:hover {
+          background: darken(#fafafa, 5%);
+        }
+
+        a, .dropdown-header {
+          @include nav-item;
+        }
+
+        .dropdown-header {
+          border-bottom: none;
+
+          &.active {
+            border-color: rgba(0, 0, 0, .2);
+          }
+        }
+
+        .dropdown-body {
+          display: none;
+          background-color: #fafafa;
+          border: 1px solid transparent;
+
+          &.active {
+            display: flex;
+            flex-direction: column;
+            position: absolute;
+            top: 100%;
+            box-shadow: 0 10px 20px 0 rgba(0, 0, 0, .1);
+            border-color: rgba(0, 0, 0, .2);
+          }
+
+          &__item {
+            //transition: background-color .1s ease-out;
+
+            &:hover {
+              background: darken(#fafafa, 5%);
+            }
+
+            span {
+              @include nav-item;
+              white-space: nowrap;
+            }
+          }
+        }
+      }
+    }
+  }
 </style>
