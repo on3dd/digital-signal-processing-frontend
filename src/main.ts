@@ -2,11 +2,9 @@ import Vue from 'vue'
 import App from './App.vue'
 import store from './store'
 import router from './router'
+import Axios from 'axios'
 
-// const GithubIcon = require('mdi-vue/GithubBox.vue');
-//
-// Vue.component('github-icon', GithubIcon);
-
+Vue.prototype.$http = Axios;
 Vue.config.productionTip = false;
 
 new Vue({
