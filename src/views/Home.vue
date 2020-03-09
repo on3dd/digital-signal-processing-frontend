@@ -6,7 +6,7 @@
 </template>
 
 <script lang="ts">
-  import TelegramChart from "@/components/charts/TelegramChart.vue";
+  import DSPChart from "@/components/charts/DSPChart.vue";
   import {transformData} from '@/utils';
   import themes from '@/themes';
   import data from '@/data/chart_data.json'
@@ -15,7 +15,7 @@
   export default {
     name: 'Home',
     components: {
-      TelegramChart,
+      TelegramChart: DSPChart,
     },
     data() {
       return {

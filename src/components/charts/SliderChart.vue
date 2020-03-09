@@ -20,7 +20,7 @@
   import {TransformedData} from "@/types/data";
   import {css} from "@/utils";
   import Draw from "@/draw";
-  import TelegramChart from "@/components/charts/TelegramChart.vue";
+  import DSPChart from "@/components/charts/DSPChart.vue";
 
   @Component
   export default class SliderChart extends BaseChart {

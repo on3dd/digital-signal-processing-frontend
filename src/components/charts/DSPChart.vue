@@ -45,7 +45,7 @@
       SliderChart,
     }
   })
-  export default class TelegramChart extends Vue {
+  export default class DSPChart extends Vue {
     @Prop({type: Object, required: true}) options!: Options;
 
     protected data!: TransformedData;
@@ -69,7 +69,7 @@
     };
 
     created() {
-      console.log('TelegramChart created');
+      console.log('DSPChart created');
 
       this.data = this.options.data!;
       this.theme = this.options.theme || themes.day;
@@ -77,11 +77,11 @@
       this.h = this.options.height || 300;
       this.animationSpeed = this.options.animationSpeed || 15;
 
-      console.log("TelegramChart size:", this.w, this.h);
+      console.log("DSPChart size:", this.w, this.h);
     }
 
     mounted() {
-      console.log('TelegramChart mounted');
+      console.log('DSPChart mounted');
 
       this.wrap = document.querySelector('.tg-chart') as HTMLElement;
       // console.log(this.wrap);
@@ -122,7 +122,7 @@
     }
 
     updateTheme() {
-      console.log("TelegramChart updateTheme fired");
+      console.log("DSPChart updateTheme fired");
       this.$refs.slider.updateTheme(this.theme);
       this.$refs.tooltip.updateTheme(this.theme);
       this.$refs.detail.updateTheme(this.theme);
