@@ -29,7 +29,7 @@
     protected $window!: HTMLElement;
     protected $right!: HTMLElement;
 
-    // TODO: Fix types
+    // FIXME: Fix types
     public $parent!: any;
 
     // created() {

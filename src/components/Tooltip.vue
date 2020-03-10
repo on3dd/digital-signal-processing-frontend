@@ -1,15 +1,13 @@
 <template>
   <div class="tooltip">
-    <div v-if="data !== undefined">
-      <div class="tooltip-title">{{data.title}}</div>
-      <ul class="tooltip-list">
-        <li class="tooltip-list-item" v-for="(item, key) in data.items" :key="key">
-          <div class="value" :style="{color: item.color}">{{item.value}}</div>
-          <div class="name" :style="{color: item.color}">{{item.name}}</div>
-        </li>
-      </ul>
-    </div>
-    </div>
+    <div class="tooltip-title">{{data.title}}</div>
+    <ul class="tooltip-list">
+      <li class="tooltip-list-item" v-for="(item, key) in data.items" :key="key">
+        <div class="value" :style="{color: item.color}">{{item.value}}</div>
+        <div class="name" :style="{color: item.color}">{{item.name}}</div>
+      </li>
+    </ul>
+  </div>
 </template>
 
 <script lang="ts">
@@ -17,31 +15,42 @@
   import Theme from "@/types/theme";
   import {css} from "@/utils";
   import {ShowData} from "@/types/data";
-  import options from "@/types/options";
 
+  // @Component<Tooltip>({
+  //   watch: {
+  //     data: function (val: ShowData) {
+  //       console.log(val);
+  //       this.data = val;
+  //     }
+  //   }
+  // })
   @Component
   export default class Tooltip extends Vue {
     // @Prop({type: HTMLElement, required: true}) $el!: HTMLElement;
-    @Prop({type: Object, required: true}) options!: {top: number; left: number; data?: ShowData; theme: Theme};
+    @Prop({type: Object, required: true}) options!: {
+      top: number;
+      left: number;
+      data: ShowData;
+      theme: Theme;
+    };
 
-    top!: number;
-    left!: number;
-    data!: ShowData;
-    theme!: Theme;
+    public top =  this.options.top;
+    public left = this.options.left;
+    public data = this.options.data;
+    public theme = this.options.theme;;
 
     private tooltip!: HTMLElement;
 
     created() {
-      this.top = this.options.top;
-      this.left = this.options.left;
-      this.data = this.options.data!;
-      this.theme = this.options.theme;
+      // this.top = this.options.top;
+      // this.left = this.options.left;
+      // this.data = this.options.data;
+      // this.theme = this.options.theme;
     }
 
     mounted() {
-      console.log("Tooltip mounted");
       this.tooltip = document.getElementsByClassName('tooltip')[0] as HTMLElement;
-      console.log(this.tooltip);
+      console.log("Tooltip mounted:", this.tooltip);
     }
 
     updateTheme(theme: Theme) {
@@ -55,10 +64,11 @@
     }
 
     show() {
-      if (!Object.keys(this.data!).length) {
-        return
+      if (this.data?.items.length === 0) {
+        return;
       }
-      console.log("Tooltip show fired");
+
+      // console.log("Tooltip show fired, data:", this.data);
 
       const {height, width} = this.tooltip.getBoundingClientRect();
       css(this.tooltip, {
@@ -74,6 +84,52 @@
   }
 </script>
 
-<style scoped>
+<style scoped lang="scss">
+  .tooltip {
+    position: absolute;
+    display: none;
+    max-width: 200px;
+    min-width: 120px;
+    padding: 0.5rem;
+    border-radius: 5px;
+    border: 1px solid #dfe6eb;
+    box-shadow: 1px 1px 1px rgba(0, 0, 0, .05);
+    background: #fff;
+    color: #000;
+    overflow: hidden;
+    z-index: 3;
 
+    top: 50px;
+    left: 100px;
+
+    .tooltip-title {
+      text-align: center;
+      margin-bottom: .5rem;
+      white-space: nowrap;
+    }
+
+    .tooltip-list {
+      display: flex;
+      flex-wrap: wrap;
+      padding: 0;
+      margin: 0;
+      list-style: none;
+    }
+
+    .tooltip-list-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      flex-grow: 1;
+
+      .name {
+        font-size: .8rem;
+      }
+
+      .value {
+        font-size: 1rem;
+        font-weight: bold;
+      }
+    }
+  }
 </style>

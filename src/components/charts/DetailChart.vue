@@ -12,6 +12,7 @@
   import Pos from "@/types/pos";
   import Theme from "@/types/theme";
   import {UpdateOptions} from "@/types/options";
+  import {ShowData} from "@/types/data";
 
   @Component
   export default class DetailChart extends BaseChart {
@@ -21,6 +22,10 @@
     protected pos!: { left: number; right: number };
     protected max!: number | null;
     protected dy!: number | null;
+    protected tooltipData!: ShowData;
+
+    // FIXME: Fix types
+    public $parent!: any;
 
     prepare() {
       // console.log("DetailChart size:", this.w, this.h);
@@ -81,7 +86,8 @@
       // this.proxy.pos = pos
       this.pos = pos;
       console.log("DetailChart pos:", this.pos);
-      this.raf = requestAnimationFrame(this.renderFunc);
+      // this.raf = requestAnimationFrame(this.renderFunc);
+      this.renderFunc();
     }
 
     update({type, name, labels}: UpdateOptions) {
@@ -169,7 +175,10 @@
 
       if (this.shouldAnimate()) {
         this.raf = requestAnimationFrame(this.renderFunc)
+        // return;
       }
+
+      console.log("render fired");
 
       this.draw.yAxis({
         dpiW: this.dpiW,
@@ -181,7 +190,7 @@
         rowsCount: 5
       });
 
-      this.draw.xAxis({
+      this.tooltipData = this.draw.xAxis({
         data: this.data,
         visibleItemsLength: this.datasets.length,
         datasets: this.data.datasets!.filter(set => this.activeLabels.includes(set.name)),
@@ -190,7 +199,7 @@
         xRatio: this.xRatio,
         mouse: this.mouse,
         margin: this.margin,
-        translateX: this.translateX
+        translateX: this.translateX,
       });
 
       this.data.datasets!.forEach(({data, color, name}) => {
@@ -239,6 +248,8 @@
       // this.proxy.mouse = null;
       this.mouse = null;
       // this.tooltip.hide();
+      this.renderFunc();
+      this.$parent.$refs.tooltip.hide();
     }
 
     mouseMoveHandler({clientX, clientY}: { clientX: number; clientY: number }) {
@@ -254,9 +265,25 @@
         x: (clientX - left) * 2,
         tooltip: {
           top: clientY - top,
-          left: clientX - left
+          left: clientX - left,
         }
-      }
+      };
+
+      this.renderFunc();
+
+      // FIXME: It shouldn't work this way
+      // this.$parent.tooltipData = {
+      //   top: clientY - top,
+      //   left: clientX - left,
+      //   data: this.tooltipData
+      // };
+
+      this.$parent.$refs.tooltip.top = clientY - top;
+      this.$parent.$refs.tooltip.left = clientX - left;
+      this.$parent.$refs.tooltip.data = this.tooltipData;
+
+      // console.log(this.$parent.$refs.tooltip.options);
+      this.$parent.$refs.tooltip.show();
     }
 
     destroy() {

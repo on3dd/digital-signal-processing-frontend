@@ -1,6 +1,7 @@
 import {getRgbValue, hexToRgb, isMouseOver, toDate} from './utils'
 import {LineOptions, XAxisOptions, YAxisOptions} from "@/types/options";
 import Theme from "@/types/theme";
+import {ShowData, ShowDataItem} from "@/types/data";
 
 export default class Draw {
   c: CanvasRenderingContext2D;
@@ -94,8 +95,17 @@ export default class Draw {
     }
   }
 
-  xAxis(
-      {data, datasets, visibleItemsLength, dpiW, dpiH, xRatio, mouse, margin, translateX}: XAxisOptions) {
+  xAxis({
+          data,
+          datasets,
+          visibleItemsLength,
+          dpiW,
+          dpiH,
+          xRatio,
+          mouse,
+          margin,
+          translateX,
+        }: XAxisOptions): ShowData {
     this.setContextStyles();
     this.c.strokeStyle = this.theme.gridActiveLineColor;
 
@@ -117,6 +127,12 @@ export default class Draw {
     const a = {};
 
     const colorSetter = this.getColorSetter(this.theme.gridTextColor);
+
+    // FIXME: It shouldn't work this way
+    let showData: ShowData = {
+      title: '',
+      items: [],
+    };
 
     for (let i = 0; i < data.labels!.length; i++) {
       const x = Math.floor(i * xRatio);
@@ -186,10 +202,20 @@ export default class Draw {
       //     value: set.data[i]
       //   }))
       // });
+      showData = {
+        title: toDate(data.labels![i], true),
+        items: datasets.map(set => ({
+          name: set.name,
+          color: set.color,
+          value: set.data[i]
+        }))
+      };
     }
 
     this.c.restore();
     this.c.stroke();
     this.c.closePath();
+
+    return showData;
   }
 }

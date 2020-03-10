@@ -21,10 +21,10 @@ export interface TransformedData {
   datasets?: Array<Dataset>;
 }
 
-interface ShowDataItem {
+export interface ShowDataItem {
   name: string;
   color: string;
-  value: number;
+  value: string;
 }
 
 export interface ShowData {

@@ -1,7 +1,7 @@
 import Tooltip from "@/types/tooltip";
 import Theme from "@/types/theme";
 import Pos from "@/types/pos";
-import {Dataset, TransformedData} from "@/types/data";
+import {Dataset, ShowData, TransformedData} from "@/types/data";
 import Mouse from "@/types/mouse";
 
 export default interface Options {
@@ -69,4 +69,10 @@ export interface UpdateOptions {
   type: string;
   name: string;
   labels: string[];
+}
+
+export interface TooltipOptions {
+  top: number;
+  left: number;
+  data?: ShowData;
 }

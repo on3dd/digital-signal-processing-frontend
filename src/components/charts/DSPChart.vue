@@ -1,9 +1,8 @@
 <template>
   <div class="tg-chart">
     <Tooltip :options="{
-        left: 0,
-        right: 0,
-        theme
+        ...tooltipData,
+        theme,
       }" ref="tooltip"/>
     <DetailChart :options="{
         name: 'chart',
@@ -31,8 +30,8 @@
   import DetailChart from "@/components/charts/DetailChart.vue";
   import SliderChart from "@/components/charts/SliderChart.vue";
   import Tooltip from '@/components/Tooltip.vue';
-  import Options from "../../types/options";
-  import {TransformedData} from "@/types/data";
+  import Options, {TooltipOptions} from "../../types/options";
+  import {ShowData, TransformedData} from "@/types/data";
   import Theme from "@/types/theme";
   import Label from '@/types/label';
   import themes from "@/themes";
@@ -56,12 +55,16 @@
     protected animationSpeed!: number;
     protected activeLabels!: string[];
     // protected tooltip!: Tooltip;
-    protected prevState!: { left?: number; right?: number; labelsLength?: number };
+    protected prevState!: {
+      left?: number;
+      right?: number;
+      labelsLength?: number;
+    };
 
-    // private isRendered = false;
+    protected tooltipData!: TooltipOptions;
 
     public $refs!: Vue['$refs'] & {
-      // TODO: Fix types
+      // FIXME: Fix types
       tooltip: Tooltip;
       detail: DetailChart;
       slider: SliderChart;
@@ -76,6 +79,15 @@
       this.w = this.options.width || 500;
       this.h = this.options.height || 300;
       this.animationSpeed = this.options.animationSpeed || 15;
+
+      this.tooltipData = {
+        top: 0,
+        left: 0,
+        data: {
+          title: '',
+          items: [],
+        },
+      };
 
       console.log("DSPChart size:", this.w, this.h);
     }
