@@ -109,7 +109,7 @@
           border-bottom: none;
 
           &.active {
-            border-color: rgba(0, 0, 0, .2);
+            border-color: rgba(0, 0, 0, .1);
           }
         }
 
@@ -123,8 +123,8 @@
             flex-direction: column;
             position: absolute;
             top: 100%;
-            box-shadow: 0 10px 20px 0 rgba(0, 0, 0, .1);
-            border-color: rgba(0, 0, 0, .2);
+            box-shadow: 0 5px 10px 0 rgba(0, 0, 0, .05);
+            border-color: rgba(0, 0, 0, .1);
           }
 
           &__item {

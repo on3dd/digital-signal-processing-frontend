@@ -16,17 +16,8 @@
   import {css} from "@/utils";
   import {ShowData} from "@/types/data";
 
-  // @Component<Tooltip>({
-  //   watch: {
-  //     data: function (val: ShowData) {
-  //       console.log(val);
-  //       this.data = val;
-  //     }
-  //   }
-  // })
   @Component
   export default class Tooltip extends Vue {
-    // @Prop({type: HTMLElement, required: true}) $el!: HTMLElement;
     @Prop({type: Object, required: true}) options!: {
       top: number;
       left: number;
@@ -37,7 +28,7 @@
     public top =  this.options.top;
     public left = this.options.left;
     public data = this.options.data;
-    public theme = this.options.theme;;
+    public theme = this.options.theme;
 
     private tooltip!: HTMLElement;
 

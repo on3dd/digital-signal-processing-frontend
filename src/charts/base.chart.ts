@@ -105,7 +105,6 @@ export default class BaseChart extends Vue {
   // updateTheme(theme) {}
 
   renderFunc() {
-    console.log("render fired");
     this.clear();
     this.setup();
 
