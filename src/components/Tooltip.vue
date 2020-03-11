@@ -59,8 +59,6 @@
         return;
       }
 
-      // console.log("Tooltip show fired, data:", this.data);
-
       const {height, width} = this.tooltip.getBoundingClientRect();
       css(this.tooltip, {
         display: 'block',

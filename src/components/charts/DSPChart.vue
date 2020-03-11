@@ -31,7 +31,7 @@
   import SliderChart from "@/components/charts/SliderChart.vue";
   import Tooltip from '@/components/Tooltip.vue';
   import Options, {TooltipOptions} from "../../types/options";
-  import {ShowData, TransformedData} from "@/types/data";
+  import {TransformedData} from "@/types/data";
   import Theme from "@/types/theme";
   import Label from '@/types/label';
   import themes from "@/themes";
@@ -68,7 +68,7 @@
       tooltip: Tooltip;
       detail: DetailChart;
       slider: SliderChart;
-      labels: Label;
+      labels: Label & HTMLElement;
     };
 
     created() {
@@ -102,8 +102,6 @@
 
       this.prepare();
       this.init();
-
-      // this.isRendered = true;
     }
 
     prepare() {
@@ -116,7 +114,7 @@
 
     init() {
       document.body.classList.add('tg-chart-preload');
-      this.$refs.labels.addEventListener('click', this.labelClickHandler);
+      this.$refs.labels.addEventListener('click', this.labelClickHandler as unknown as EventListener);
 
       this.updateTheme();
       this.updateChart();
@@ -138,8 +136,8 @@
       this.$refs.slider.updateTheme(this.theme);
       this.$refs.tooltip.updateTheme(this.theme);
       this.$refs.detail.updateTheme(this.theme);
-      this.$refs.labels.querySelectorAll('.tg-chart-checkbox').forEach(($label: HTMLElement) => {
-        css($label, {
+      this.$refs.labels.querySelectorAll('.tg-chart-checkbox').forEach(($label) => {
+        css($label as HTMLElement, {
           color: this.theme.checkboxColor,
           borderColor: this.theme.checkboxBorder
         })
@@ -148,7 +146,6 @@
 
     renderLabels() {
       const labels = this.data.datasets!.map(set => new Label(set).toHtml()).join(' ');
-      // console.log("labels:", labels);
       this.$refs.labels.insertAdjacentHTML('afterbegin', labels);
     }
 
@@ -158,13 +155,12 @@
         const [left, right] = this.$refs.slider.position();
 
         this.prevState = {left, right, labelsLength: this.activeLabels.length};
-        // console.log("prevState:", this.prevState);
 
         this.$refs.detail.updatePosition({left, right});
       }
     }
 
-    labelClickHandler({target}: { target: HTMLElement & HTMLInputElement }) {
+    labelClickHandler({target}: {target: HTMLInputElement}): void {
       console.log("labelClickHandler fired");
       if (target.tagName.toLowerCase() !== 'input') {
         return
@@ -192,7 +188,6 @@
 
     shouldChartUpdate() {
       const [left, right] = this.$refs.slider.position();
-      // console.log("shouldChartUpdate, left:", left, "right:", right);
       return this.prevState.left !== left
           || this.prevState.right !== right
           || this.prevState.labelsLength !== this.activeLabels.length

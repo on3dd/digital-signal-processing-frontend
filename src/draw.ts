@@ -18,8 +18,16 @@ export default class Draw {
     this.theme = theme;
   }
 
-  line(
-      {coords, color, opacity, mouse, dpiW, translateX, withCircles, visibleItemsCount}: LineOptions) {
+  line({
+         coords,
+         color,
+         opacity,
+         mouse,
+         dpiW,
+         translateX,
+         withCircles,
+         visibleItemsCount
+       }: LineOptions) {
     // console.log("line fired");
     this.c.beginPath();
     this.c.save();
@@ -63,8 +71,15 @@ export default class Draw {
     this.c.lineWidth = this.theme.gridLineWidth;
   }
 
-  yAxis(
-      {dpiW, viewH, yMax, yMin, margin, delta, rowsCount = 5}: YAxisOptions) {
+  yAxis({
+          dpiW,
+          viewH,
+          yMax,
+          yMin,
+          margin,
+          delta,
+          rowsCount = 5
+        }: YAxisOptions) {
     this.setContextStyles();
 
     const step = Math.round(viewH / rowsCount);
@@ -124,7 +139,7 @@ export default class Draw {
     let prevEnd = 0;
     let count = 0;
 
-    const a = {};
+    const a = {} as any;
 
     const colorSetter = this.getColorSetter(this.theme.gridTextColor);
 
@@ -194,14 +209,6 @@ export default class Draw {
       this.c.lineTo(x, dpiH - margin);
       this.c.restore();
 
-      // this.tooltip.show(mouse.tooltip, {
-      //   title: toDate(data.labels[i], true),
-      //   items: datasets.map(set => ({
-      //     name: set.name,
-      //     color: set.color,
-      //     value: set.data[i]
-      //   }))
-      // });
       showData = {
         title: toDate(data.labels![i], true),
         items: datasets.map(set => ({

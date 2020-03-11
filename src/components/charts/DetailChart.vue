@@ -55,7 +55,7 @@
       this.cvs.addEventListener('mouseleave', this.mouseLeaveHandler);
     }
 
-    get datasets() {
+    datasets() {
       const length = this.data.labels!.length;
       const leftIndex = Math.round(length * this.pos.left / 100);
       const rightIndex = Math.round(length * this.pos.right / 100);
@@ -114,7 +114,7 @@
     }
 
     setup() {
-      const [min, max] = getBoundary(this.datasets.value);
+      const [min, max] = getBoundary(this.datasets().value);
       this.updateMaxAndDelta(max, min);
 
       const [xRatio, yRatio] = computeRatio({
@@ -172,6 +172,8 @@
     }
 
     renderFunc() {
+      console.log("render fired");
+
       this.clear();
       this.setup();
 
@@ -179,8 +181,6 @@
         this.raf = requestAnimationFrame(this.renderFunc)
         // return;
       }
-
-      // console.log("render fired");
 
       this.draw.yAxis({
         dpiW: this.dpiW,
@@ -194,7 +194,7 @@
 
       this.tooltipData = this.draw.xAxis({
         data: this.data,
-        visibleItemsLength: this.datasets.length,
+        visibleItemsLength: this.datasets().length,
         datasets: this.data.datasets!.filter(set => this.activeLabels.includes(set.name)),
         dpiW: this.dpiW,
         dpiH: this.dpiH,
@@ -230,7 +230,7 @@
           mouse: this.mouse,
           dpiW: this.dpiW,
           opacity: this.lines[name].opacity,
-          visibleItemsCount: this.datasets.length,
+          visibleItemsCount: this.datasets().length,
           withCircles: true
         });
       })
@@ -251,32 +251,27 @@
     }
 
     mouseLeaveHandler() {
-      // this.proxy.mouse = null;
       this.mouse = null;
-      // this.tooltip.hide();
       this.renderFunc();
       this.$parent.$refs.tooltip.hide();
     }
 
+    // TODO: Get rid of unnecessary redraws
     mouseMoveHandler({clientX, clientY}: { clientX: number; clientY: number }) {
       const {left, top} = this.cvs.getBoundingClientRect();
       this.mouse = {
         x: (clientX - left) * 2,
-        tooltip: {
-          top: clientY - top,
-          left: clientX - left,
-        }
       };
 
       this.renderFunc();
 
-      // FIXME: It shouldn't work this way
       // this.$parent.tooltipData = {
       //   top: clientY - top,
       //   left: clientX - left,
       //   data: this.tooltipData
       // };
 
+      // FIXME: It shouldn't work this way
       this.$parent.$refs.tooltip.top = clientY - top;
       this.$parent.$refs.tooltip.left = clientX - left;
       this.$parent.$refs.tooltip.data = this.tooltipData;

@@ -37,11 +37,6 @@
     // }
 
     prepare() {
-      // console.log("SliderChart size:", this.w, this.h);
-      // console.log("SliderChart cvs size:", this.cvs.width, this.cvs.height);
-      // console.log("SliderChart cvs:", this.cvs);
-      // console.log("SliderChart name:", this.name);
-
       this.renderFunc = this.renderFunc.bind(this);
 
       this.$wrap = this.$el.parentElement!;
@@ -94,9 +89,6 @@
           const left = dimension.left - delta;
           const right = this.w - left - dimension.width;
 
-          // console.log("startX:", startX, "delta:", delta);
-          // console.log("left:", left, "right:", right);
-
           this.setPosition(left, right);
           // this.trigger();
           this.$parent.updateChart();
@@ -107,10 +99,10 @@
 
         document.onmousemove = e => {
           const delta = startX - e.pageX;
-          // console.log("zoomWidth:", zoomWidth, "startX", startX, "delta", delta, "dimension", dimension);
           if (delta === 0) {
             return
           }
+
           if (type === 'left') {
             const left = this.w - (zoomWidth + delta) - dimension.right;
             const right = this.w - (zoomWidth + delta) - left;
@@ -119,6 +111,7 @@
             const right = this.w - (zoomWidth - delta) - dimension.left;
             this.setPosition(dimension.left, right);
           }
+
           // this.trigger();
           this.$parent.updateChart();
         }
@@ -152,14 +145,9 @@
 
       this.$left.style.width = `${left}px`;
       this.$right.style.width = `${right}px`;
-
-      // console.log("setPosition fired");
-      // console.log("left:", left, this.$left.style.width);
-      // console.log("right:", left, this.$right.style.width);
     }
 
     position(): number[] {
-      // console.log("position getter fired");
       const leftPx = parseInt(this.$left.style.width);
       const rightPx = this.w - parseInt(this.$right.style.width);
 
@@ -170,7 +158,6 @@
     }
 
     mouseUpHandler() {
-      // console.log("mouseUpHandler fired");
       document.onmousemove = null;
     }
 

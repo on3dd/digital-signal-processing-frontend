@@ -38,8 +38,13 @@ export function getBoundary(datasets: Array<Dataset>) {
   return [min, max]
 }
 
-export function computeRatio(
-    {pos, viewH, viewW, length, delta}: ComputeOptions): [number, number] {
+export function computeRatio({
+                               pos,
+                               viewH,
+                               viewW,
+                               length,
+                               delta
+                             }: ComputeOptions): [number, number] {
   const percent = (pos.right - pos.left) / 100;
 
   const xRatio = viewW / percent / (length - 2);
@@ -70,11 +75,13 @@ export function toDate(timestamp: string, withDay = false): string {
 
 export function css(el: HTMLElement, styles: Map = {}) {
   Object.keys(styles).forEach((style: string) => {
-    el.style[style] = styles[style]
+    el.style[style as any] = styles[style]
   })
 }
 
-export function noop() { return }
+export function noop() {
+  return
+}
 
 export function computeDy({max, min, oldMax, speed}: { max: number; min: number; oldMax: number; speed: number }) {
   const delta = max - oldMax;
@@ -87,6 +94,7 @@ export function isMouseOver(x: number, mouse: Mouse, translateX: number, dpiW: n
   if (!mouse) {
     return false
   }
+
   return Math.abs(x - (mouse.x + Math.abs(translateX))) < dpiW / length / 2
 }
 
