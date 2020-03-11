@@ -73,19 +73,21 @@
       }
     }
 
-    get translateX(): number {
+    translateX(): number {
+      // console.log("labels.length", this.data.labels?.length);
+      // console.log("xRatio", this.xRatio);
+      // console.log("yRatio", this.yRatio);
+      // console.log("pos.left", this.pos.left);
       return -1 * Math.round(this.data.labels!.length * this.xRatio * this.pos.left / 100)
     }
 
-    get delta(): number {
+    delta(): number {
       return Math.round(this.max! - this.yMax)
     }
 
     updatePosition(pos: Pos) {
       // console.log("updatePosition fired");
-      // this.proxy.pos = pos
       this.pos = pos;
-      console.log("DetailChart pos:", this.pos);
       // this.raf = requestAnimationFrame(this.renderFunc);
       this.renderFunc();
     }
@@ -106,8 +108,8 @@
       // this.proxy.activeLabels = labels
       this.activeLabels = labels;
       console.log("DetailChart update fired");
-      console.log("lines:", this.lines);
-      console.log("activeLabels:", this.activeLabels);
+      // console.log("lines:", this.lines);
+      // console.log("activeLabels:", this.activeLabels);
       this.renderFunc();
     }
 
@@ -160,7 +162,7 @@
           .map(k => this.lines[k].step)
           .every(l => l === 0);
 
-      return this.dy || !isTransitionFinished || this.delta;
+      return this.dy || !isTransitionFinished || this.delta();
     }
 
     updateTheme(theme: Theme) {
@@ -178,12 +180,12 @@
         // return;
       }
 
-      console.log("render fired");
+      // console.log("render fired");
 
       this.draw.yAxis({
         dpiW: this.dpiW,
         viewH: this.viewH,
-        delta: this.delta,
+        delta: this.delta(),
         yMax: this.yMax,
         yMin: this.yMin,
         margin: this.margin,
@@ -199,7 +201,7 @@
         xRatio: this.xRatio,
         mouse: this.mouse,
         margin: this.margin,
-        translateX: this.translateX,
+        translateX: this.translateX(),
       });
 
       this.data.datasets!.forEach(({data, color, name}) => {
@@ -216,11 +218,15 @@
           data
         });
 
+        // console.log(`name: ${name}, coords: ${coords}`);
+
         this.updateOpacityFor(name);
+
+        // this.translateX();
 
         this.draw.line({
           coords, color,
-          translateX: this.translateX,
+          translateX: this.translateX(),
           mouse: this.mouse,
           dpiW: this.dpiW,
           opacity: this.lines[name].opacity,
@@ -231,7 +237,7 @@
     }
 
     shouldSkipLine(name: string) {
-      return this.lines[name].opacity <= 0 && this.lines[name].step === 0;
+      return (this.lines[name].opacity <= 0) && (this.lines[name].step === 0);
     }
 
     updateOpacityFor(name: string) {
@@ -254,13 +260,6 @@
 
     mouseMoveHandler({clientX, clientY}: { clientX: number; clientY: number }) {
       const {left, top} = this.cvs.getBoundingClientRect();
-      // this.proxy.mouse = {
-      //   x: (clientX - left) * 2,
-      //   tooltip: {
-      //     top: clientY - top,
-      //     left:  clientX - left
-      //   }
-      // }
       this.mouse = {
         x: (clientX - left) * 2,
         tooltip: {
