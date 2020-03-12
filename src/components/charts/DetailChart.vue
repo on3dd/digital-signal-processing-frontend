@@ -22,7 +22,10 @@
     protected pos!: { left: number; right: number };
     protected max!: number | null;
     protected dy!: number | null;
+
     protected tooltipData!: ShowData;
+
+    protected prevElement = -1;
 
     // FIXME: Fix types
     public $parent!: any;
@@ -74,10 +77,6 @@
     }
 
     translateX(): number {
-      // console.log("labels.length", this.data.labels?.length);
-      // console.log("xRatio", this.xRatio);
-      // console.log("yRatio", this.yRatio);
-      // console.log("pos.left", this.pos.left);
       return -1 * Math.round(this.data.labels!.length * this.xRatio * this.pos.left / 100)
     }
 
@@ -88,7 +87,6 @@
     updatePosition(pos: Pos) {
       // console.log("updatePosition fired");
       this.pos = pos;
-      // this.raf = requestAnimationFrame(this.renderFunc);
       this.renderFunc();
     }
 
@@ -105,11 +103,8 @@
         }
       }
 
-      // this.proxy.activeLabels = labels
       this.activeLabels = labels;
       console.log("DetailChart update fired");
-      // console.log("lines:", this.lines);
-      // console.log("activeLabels:", this.activeLabels);
       this.renderFunc();
     }
 
@@ -256,14 +251,17 @@
       this.$parent.$refs.tooltip.hide();
     }
 
-    // TODO: Get rid of unnecessary redraws
     mouseMoveHandler({clientX, clientY}: { clientX: number; clientY: number }) {
       const {left, top} = this.cvs.getBoundingClientRect();
       this.mouse = {
         x: (clientX - left) * 2,
       };
 
-      this.renderFunc();
+      const currentElement = Math.round(this.mouse.x / (this.dpiW / this.datasets().length));
+      if (currentElement !== this.prevElement) {
+        this.prevElement = currentElement;
+        this.renderFunc();
+      }
 
       // this.$parent.tooltipData = {
       //   top: clientY - top,
@@ -278,12 +276,6 @@
 
       // console.log(this.$parent.$refs.tooltip.options);
       this.$parent.$refs.tooltip.show();
-    }
-
-    destroy() {
-      super.destroy();
-      this.cvs.removeEventListener('mousemove', this.mouseMoveHandler);
-      this.cvs.removeEventListener('mouseleave', this.mouseLeaveHandler);
     }
   }
 </script>

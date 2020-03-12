@@ -54,7 +54,7 @@
     protected h!: number;
     protected animationSpeed!: number;
     protected activeLabels!: string[];
-    // protected tooltip!: Tooltip;
+
     protected prevState!: {
       left?: number;
       right?: number;
@@ -65,9 +65,9 @@
 
     public $refs!: Vue['$refs'] & {
       // FIXME: Fix types
-      tooltip: Tooltip;
-      detail: DetailChart;
-      slider: SliderChart;
+      tooltip: Tooltip & any;
+      detail: DetailChart & any;
+      slider: SliderChart & any;
       labels: Label & HTMLElement;
     };
 
@@ -200,14 +200,6 @@
         labels: this.data.labels!.concat()
       }
     }
-
-    // destroy() {
-    //   this.$labels.removeEventListener('click', this.labelClickHandler)
-    //   this.chart.destroy()
-    //   this.slider.destroy()
-    //   document.body.classList.remove('tg-chart-preload')
-    //   this.$el.innerHTML = ''
-    // }
   }
 </script>
 

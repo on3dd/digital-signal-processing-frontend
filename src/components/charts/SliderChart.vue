@@ -160,13 +160,6 @@
     mouseUpHandler() {
       document.onmousemove = null;
     }
-
-    destroy() {
-      super.destroy();
-      this.$wrap.removeEventListener('mousedown', this.mouseDownHandler);
-      document.removeEventListener('mouseup', this.mouseUpHandler);
-      this.$wrap.innerHTML = '';
-    }
   }
 </script>
 

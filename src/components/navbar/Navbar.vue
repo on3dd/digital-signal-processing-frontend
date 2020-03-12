@@ -7,12 +7,20 @@
           <li class="dropdown-body__item">
             <file-input/>
           </li>
+          <li class="dropdown-body__item dropdown-body__item-disabled">
+            <span>Каналы</span>
+          </li>
           <li class="dropdown-body__item">
+            <div class="divider">
+              <div class="divider__inner"></div>
+            </div>
+          </li>
+          <li class="dropdown-body__item dropdown-body__item-disabled">
             <span>Закрыть</span>
           </li>
-          <li class="dropdown-body__item">
-            <span>Принять ислам</span>
-          </li>
+<!--          <li class="dropdown-body__item">-->
+<!--            <span>Принять ислам</span>-->
+<!--          </li>-->
         </ul>
       </li>
       <li v-for="(item, idx) in routerLinks" :key="idx" class="nav-links__item">
@@ -81,6 +89,7 @@
 
 <style scoped lang="scss">
   @import "../../scss/nav-item";
+  @import "../../scss/colors";
 
   nav {
     width: inherit;
@@ -129,14 +138,35 @@
 
           &__item {
             //transition: background-color .1s ease-out;
-
             &:hover {
               background: darken(#fafafa, 5%);
             }
 
             span {
               @include nav-item;
-              white-space: nowrap;
+            }
+
+            &-disabled {
+              background: darken(#fafafa, 2.5%);
+              color: lighten($textDefault, 50%);
+
+              &:hover {
+                background: darken(#fafafa, 2.5%);
+              }
+
+              span {
+                @include nav-item;
+                cursor: default;
+              }
+            }
+
+            .divider {
+              padding: 0 5px;
+
+              .divider__inner {
+                height: 1px;
+                background-color: rgba(0, 0, 0, .1);
+              }
             }
           }
         }
