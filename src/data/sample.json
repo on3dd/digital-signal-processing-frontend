@@ -1,4 +1,4 @@
-[{
+{
   "columns": [
     [
       "x",
@@ -358,5 +358,13 @@
   "colors": {
     "y0": "#3DC23F",
     "y1": "#F34C44"
+  },
+  "meta": {
+    "channels": 2,
+    "samples": 112,
+    "frequency": 8,
+    "startTime": "ДД-ММ-ГГГГ ЧЧ:MM:CC.CCC",
+    "endTime": "ДД-ММ-ГГГГ ЧЧ:MM:CC.CCC",
+    "recordLength": "ДДД, ЧЧ, ММ, СС.ССС"
   }
-}]
+}
