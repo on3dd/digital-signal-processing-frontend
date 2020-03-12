@@ -8,7 +8,7 @@
             <file-input/>
           </li>
           <li class="dropdown-body__item dropdown-body__item-disabled">
-            <span>Каналы</span>
+            <span>Добавить</span>
           </li>
           <li class="dropdown-body__item">
             <div class="divider">
@@ -18,21 +18,20 @@
           <li class="dropdown-body__item dropdown-body__item-disabled">
             <span>Закрыть</span>
           </li>
-<!--          <li class="dropdown-body__item">-->
-<!--            <span>Принять ислам</span>-->
-<!--          </li>-->
         </ul>
       </li>
       <li v-for="(item, idx) in routerLinks" :key="idx" class="nav-links__item">
         <router-link :to="item.to">{{item.text}}</router-link>
       </li>
     </ul>
+    <subnavbar/>
   </nav>
 </template>
 
 <script lang="ts">
   import {Component, Vue} from 'vue-property-decorator';
   import FileInput from './FileInput.vue'
+  import Subnavbar from './Subnavbar.vue'
 
   type RouterLink = {
     to: string;
@@ -41,7 +40,8 @@
 
   @Component({
     components: {
-      FileInput
+      FileInput,
+      Subnavbar
     }
   })
   export default class Navbar extends Vue {
@@ -94,6 +94,8 @@
   nav {
     width: inherit;
     background-color: #fafafa;
+    display: flex;
+    flex-direction: column;
 
     .nav-links {
       display: flex;
@@ -148,7 +150,7 @@
 
             &-disabled {
               background: darken(#fafafa, 2.5%);
-              color: lighten($textDefault, 50%);
+              color: lighten($textDefault, 75%);
 
               &:hover {
                 background: darken(#fafafa, 2.5%);
