@@ -5,16 +5,13 @@ import {ShowData, ShowDataItem} from "@/types/data";
 
 export default class Draw {
   c: CanvasRenderingContext2D;
-  tooltip: object;
   theme: Theme;
 
   constructor(
       context: CanvasRenderingContext2D,
-      tooltip: object,
       theme: Theme
   ) {
     this.c = context;
-    this.tooltip = tooltip;
     this.theme = theme;
   }
 

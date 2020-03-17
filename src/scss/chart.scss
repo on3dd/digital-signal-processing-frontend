@@ -1,0 +1,71 @@
+body.tg-chart-preload .tg-chart-checkbox  {
+  & span, & span:before {
+    animation-duration: 0s !important;
+    transition: border 0s !important;
+  }
+}
+
+body.tg-night {
+  background: #242f3e;
+
+  .app-title {
+    color: #fff;
+  }
+}
+
+.tg-chart {
+  position: relative;
+
+  > canvas {
+    z-index: 2;
+  }
+
+  .tg-chart-slider {
+    position: relative;
+    margin-bottom: 1rem;
+    z-index: 1;
+
+    &__right, &__left {
+      transition: background .22s ease-in-out;
+      background: #f5f9fb;
+      opacity: .8;
+      position: absolute;
+      top: 0;
+      bottom: 0;
+    }
+
+    &__left {
+      left: 0;
+    }
+
+    &__right {
+      right: 0;
+    }
+
+    &__arrow--left, &__arrow--right {
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      transition: background .22s ease-in-out;
+      background: #ddeaf3;
+      width: 4px;
+    }
+
+    &__arrow--left {
+      right: 0;
+      cursor: w-resize;
+    }
+
+    &__arrow--right {
+      left: 0;
+      cursor: e-resize;
+    }
+
+    &__window {
+      position: absolute;
+      background: transparent;
+      top: 0;
+      bottom: 0;
+    }
+  }
+}

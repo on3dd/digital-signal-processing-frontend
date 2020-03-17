@@ -5,7 +5,7 @@
 </template>
 
 <script lang="ts">
-  import {Component, Prop} from "vue-property-decorator";
+  import {Component} from "vue-property-decorator";
   import BaseChart from "@/charts/base.chart";
   import {computeDy, computeRatio, getBoundary, getCoordinates} from "@/utils";
   import Lines from "@/types/lines";
@@ -213,11 +213,7 @@
           data
         });
 
-        // console.log(`name: ${name}, coords: ${coords}`);
-
         this.updateOpacityFor(name);
-
-        // this.translateX();
 
         this.draw.line({
           coords, color,

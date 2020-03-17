@@ -14,13 +14,11 @@
 </template>
 
 <script lang="ts">
-  import {Component, Prop, Vue} from "vue-property-decorator";
+  import {Component} from "vue-property-decorator";
   import BaseChart from "@/charts/base.chart";
   import Theme from "@/types/theme";
   import {TransformedData} from "@/types/data";
   import {css} from "@/utils";
-  import Draw from "@/draw";
-  import DSPChart from "@/components/charts/DSPChart.vue";
 
   @Component
   export default class SliderChart extends BaseChart {
@@ -31,10 +29,6 @@
 
     // FIXME: Fix types
     public $parent!: any;
-
-    // created() {
-    //   super.created();
-    // }
 
     prepare() {
       this.renderFunc = this.renderFunc.bind(this);
@@ -52,7 +46,7 @@
       this.$wrap.addEventListener('mousedown', this.mouseDownHandler);
       document.addEventListener('mouseup', this.mouseUpHandler);
 
-      const defaultWidth = this.w * 0.3; // 30% by default
+      const defaultWidth = this.w; // 100% by default
       this.setPosition(0, this.w - defaultWidth);
     }
 
