@@ -1,6 +1,6 @@
 <template>
   <div class="detail">
-    <canvas id="chart"/>
+    <canvas :id="name"/>
   </div>
 </template>
 
@@ -167,7 +167,7 @@
     }
 
     renderFunc() {
-      console.log("render fired");
+      // console.log("render fired");
 
       this.clear();
       this.setup();
@@ -279,7 +279,3 @@
     }
   }
 </script>
-
-<style scoped>
-
-</style>

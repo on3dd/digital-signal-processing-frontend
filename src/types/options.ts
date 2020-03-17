@@ -1,8 +1,9 @@
-import Tooltip from "@/types/tooltip";
+import Tooltip from "@/types/children-names";
 import Theme from "@/types/theme";
 import Pos from "@/types/pos";
 import {Dataset, ShowData, TransformedData} from "@/types/data";
 import Mouse from "@/types/mouse";
+import ChildrenNames from "@/types/children-names";
 
 export default interface Options {
   name: string;
@@ -13,6 +14,7 @@ export default interface Options {
   onUpdate?: Function;
   animationSpeed?: number;
   theme?: Theme;
+  childrenNames?: ChildrenNames;
 }
 
 export interface ComputeOptions {
@@ -75,4 +77,9 @@ export interface TooltipOptions {
   top: number;
   left: number;
   data?: ShowData;
+}
+
+export interface ExtendedTooltipOptions extends TooltipOptions{
+  name: string;
+  theme: Theme;
 }

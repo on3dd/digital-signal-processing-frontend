@@ -1,5 +1,5 @@
 <template>
-  <div class="tooltip">
+  <div class="tooltip" :id="name">
     <div class="tooltip-title">{{data.title}}</div>
     <ul class="tooltip-list">
       <li class="tooltip-list-item" v-for="(item, key) in data.items" :key="key">
@@ -13,22 +13,18 @@
 <script lang="ts">
   import {Component, Prop, Vue} from "vue-property-decorator";
   import Theme from "@/types/theme";
+  import { ExtendedTooltipOptions } from '@/types/options';
   import {css} from "@/utils";
-  import {ShowData} from "@/types/data";
 
   @Component
   export default class Tooltip extends Vue {
-    @Prop({type: Object, required: true}) options!: {
-      top: number;
-      left: number;
-      data: ShowData;
-      theme: Theme;
-    };
+    @Prop({type: Object, required: true}) options!: ExtendedTooltipOptions;
 
     public top =  this.options.top;
     public left = this.options.left;
     public data = this.options.data;
     public theme = this.options.theme;
+    public name = this.options.name;
 
     private tooltip!: HTMLElement;
 
@@ -40,7 +36,7 @@
     }
 
     mounted() {
-      this.tooltip = document.getElementsByClassName('tooltip')[0] as HTMLElement;
+      this.tooltip = document.getElementById(this.name)!;
       console.log("Tooltip mounted:", this.tooltip);
     }
 

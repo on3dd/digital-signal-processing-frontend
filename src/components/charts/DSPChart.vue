@@ -2,19 +2,19 @@
   <div class="tg-chart">
     <Tooltip :options="{
         ...tooltipData,
+        name: childrenNames.tooltip,
         theme,
       }" ref="tooltip"/>
     <DetailChart :options="{
-        name: 'chart',
+        name: childrenNames.detail,
         width: w,
         height: h,
-        // tooltip: tooltip,
         data: data,
         animationSpeed: animationSpeed,
         theme
       }" ref="detail"/>
     <SliderChart :options="{
-        name: 'slider-chart',
+        name: childrenNames.slider,
         width: w,
         height: 40,
         data: data,
@@ -36,6 +36,7 @@
   import Label from '@/types/label';
   import themes from "@/themes";
   import {css} from "@/utils";
+  import ChildrenNames from "@/types/children-names";
 
   @Component({
     components: {
@@ -61,6 +62,7 @@
       labelsLength?: number;
     };
 
+    protected childrenNames!: ChildrenNames;
     protected tooltipData!: TooltipOptions;
 
     public $refs!: Vue['$refs'] & {
@@ -80,6 +82,8 @@
       this.h = this.options.height || 300;
       this.animationSpeed = this.options.animationSpeed || 15;
 
+      this.childrenNames = this.options.childrenNames!;
+
       this.tooltipData = {
         top: 0,
         left: 0,
@@ -96,7 +100,6 @@
       console.log('DSPChart mounted');
 
       this.wrap = document.querySelector('.tg-chart') as HTMLElement;
-      // console.log(this.wrap);
 
       console.log("$refs:", this.$refs);
 
@@ -202,7 +205,3 @@
     }
   }
 </script>
-
-<style scoped>
-
-</style>

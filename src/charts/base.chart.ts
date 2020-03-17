@@ -2,7 +2,6 @@ import {Component, Prop, Vue} from 'vue-property-decorator';
 import {computeRatio, css, getBoundary, getCoordinates, noop} from '@/utils'
 import Draw from '@/draw'
 import Options from "@/types/options";
-import Tooltip from "@/types/tooltip";
 import {TransformedData} from "@/types/data";
 import Mouse from "@/types/mouse";
 
@@ -15,7 +14,6 @@ export default class BaseChart extends Vue {
   protected c!: CanvasRenderingContext2D;
   protected w!: number;
   protected h!: number;
-  protected tooltip!: Tooltip;
   protected data!: TransformedData;
   protected trigger!: Function;
   protected animationSpeed!: number;
@@ -40,7 +38,6 @@ export default class BaseChart extends Vue {
     this.name = this.options.name;
     this.w = this.options.width;
     this.h = this.options.height;
-    this.tooltip = this.options.tooltip!;
     this.data = this.options.data || {};
     this.trigger = this.options.onUpdate || noop;
     this.animationSpeed = this.options.animationSpeed || 15;
@@ -66,7 +63,7 @@ export default class BaseChart extends Vue {
       height: `${this.h}px`
     });
 
-    this.draw = new Draw(this.c, this.tooltip, this.options.theme!);
+    this.draw = new Draw(this.c, this.options.theme!);
 
     this.prepare();
     this.init();
@@ -99,10 +96,6 @@ export default class BaseChart extends Vue {
     this.xRatio = xRatio;
     this.yRatio = yRatio;
   }
-
-  // update(data) {}
-
-  // updateTheme(theme) {}
 
   renderFunc() {
     this.clear();

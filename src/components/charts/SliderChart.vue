@@ -1,6 +1,6 @@
 <template>
   <div class="tg-chart-slider">
-    <canvas id="slider-chart"></canvas>
+    <canvas :id="name"></canvas>
     <div data-el="left" class="tg-chart-slider__left">
       <div class="tg-chart-slider__arrow--left" data-el="arrow" data-type="left"></div>
     </div>
