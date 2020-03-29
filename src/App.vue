@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="app-wrapper">
     <header id="nav">
       <navbar/>
     </header>
@@ -22,16 +22,17 @@
 <style lang="scss">
   @import "./scss/index";
 
-  main {
-    width: 100%;
+  .app-wrapper {
+    display: flex;
+    flex-direction: column;
+    height: inherit;
+    width: inherit;
+  }
 
-    .app {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      padding: 3rem;
-      width: 100%;
-    }
+  main {
+    display: flex;
+    flex-grow: 1;
+    width: 100%;
   }
 
   header {

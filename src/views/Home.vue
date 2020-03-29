@@ -1,7 +1,10 @@
 <template>
-  <div class="app">
-    <h1>Digital Signal Processing</h1>
-    <div v-if="file.columns.length !== 0">
+  <div class="home">
+    <h1 class="header">Digital Signal Processing</h1>
+    <div v-if="file.columns.length === 0" class="drop-area-placeholder">
+      <DropArea/>
+    </div>
+    <div v-else>
       <DSPChart :options="{
       ...options,
       childrenNames: {
@@ -11,11 +14,6 @@
         },
     }"/>
     </div>
-    <!--    <DSPChart :options="options1"/>-->
-    <!--    <DSPChart :options="options2"/>-->
-    <!--    <DSPChart :options="options3"/>-->
-    <!--    <DSPChart :options="options4"/>-->
-    <!--    <DSPChart :options="options5"/>-->
   </div>
 </template>
 
@@ -23,31 +21,29 @@
   import {Component, Vue} from "vue-property-decorator";
   import {Getter} from "vuex-class";
   import DSPChart from "@/components/charts/DSPChart.vue";
+  import DropArea from "@/components/DropArea.vue";
   import {transformData} from '@/utils';
   import themes from '@/themes';
   import {DataItem} from "@/types/data";
   import {ResponseDataArraySpecJSON} from "@/types/responseDataArray.spec";
-  import Options from "@/types/options";
 
   @Component({
     components: {
       DSPChart,
+      DropArea,
     },
   })
   export default class Home extends Vue {
     @Getter file!: ResponseDataArraySpecJSON;
 
     get options() {
-      const obj = {
-        // name: '',
+      return {
         width: 800,
         height: 300,
         data: transformData(this.file as DataItem),
         theme: themes.day,
         animationSpeed: 20,
       };
-
-      return obj;
     }
 
     // private options1 = {
@@ -118,7 +114,21 @@
 </script>
 
 <style lang="scss" scoped>
-  h1 {
-    text-align: center;
+  .home {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 3rem;
+    width: 100%;
+
+    .header {
+      text-align: center;
+    }
+
+    .drop-area-placeholder {
+      width: 80%;
+      max-width: 800px;
+      flex-grow: 1;
+    }
   }
 </style>

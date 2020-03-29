@@ -14,8 +14,7 @@
     @Action processFile!: (files: FileList) => void;
 
     submitFile(evt: InputEvent) {
-      const input = evt.target as HTMLInputElement;
-      this.processFile(input.files!);
+      this.processFile((evt.target as HTMLInputElement).files!);
     }
   }
 </script>

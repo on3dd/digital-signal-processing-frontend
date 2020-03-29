@@ -35,6 +35,6 @@ export default {
     }
   },
   getters: {
-    file: (state: FileState) => { console.log(state.file); return state.file },
+    file: (state: FileState) => state.file,
   }
 } as ModuleTree<{}>;
