@@ -17,8 +17,6 @@
     @Action processFile!: (files: FileList) => void;
 
     mounted() {
-      console.log('drop area:', this.$refs.dropArea);
-
       ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
         this.$refs.dropArea.addEventListener(eventName, (e: Event) => e.preventDefault(), false);
       });

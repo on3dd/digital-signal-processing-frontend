@@ -1,6 +1,7 @@
 import axios from "axios";
 import {Commit, ModuleTree} from "vuex";
 import {ResponseDataArraySpecJSON} from "@/types/responseDataArray.spec";
+import {objToStrMap} from "@/utils";
 
 interface FileState {
   file: ResponseDataArraySpecJSON;
@@ -36,5 +37,9 @@ export default {
   },
   getters: {
     file: (state: FileState) => state.file,
+    meta: (state: FileState) => state.file.meta,
+    channels: (state: FileState) => {
+      return Array.from(objToStrMap(state.file.names).values());
+    }
   }
 } as ModuleTree<{}>;

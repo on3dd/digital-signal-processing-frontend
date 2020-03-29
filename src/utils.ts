@@ -116,3 +116,12 @@ export function hexToRgb(hex: string, opacity = 1) {
   const r = getRgbValue(hex)!;
   return `rgba(${parseInt(r[1], 16)}, ${parseInt(r[2], 16)}, ${parseInt(r[3], 16)}, ${opacity})`;
 }
+
+export function objToStrMap(obj: DynamicObject): Map<string, string> {
+  const strMap = new Map();
+  for (const k of Object.keys(obj)) {
+    strMap.set(k, obj[k]);
+  }
+
+  return strMap;
+}
