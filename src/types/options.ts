@@ -26,7 +26,7 @@ export interface ComputeOptions {
 }
 
 export interface CoordinatesOptions {
-  data: string[];
+  data: Array<string | number>;
   yMin: number;
   viewH: number;
   xRatio: number;

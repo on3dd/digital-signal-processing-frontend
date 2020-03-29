@@ -1,10 +1,11 @@
-import {DataItem, Dataset, TransformedData, Map} from "@/types/data";
+import {DataItem, Dataset, TransformedData} from "@/types/data";
 import {ComputeOptions, CoordinatesOptions} from "@/types/options";
 import Mouse from "@/types/mouse";
+import {DynamicObject} from "@/types/responseDataArray.spec";
 
 export function transformData(data: DataItem): TransformedData {
   const datasets = Array<Dataset>();
-  let labels = Array<string>();
+  let labels = Array<string | number>();
 
   data.columns.forEach(column => {
     if (column[0] === 'x') {
@@ -21,11 +22,14 @@ export function transformData(data: DataItem): TransformedData {
     }
   });
 
+  console.log('labels:', labels);
+  console.log('datasets:', datasets);
+
   return {labels, datasets}
 }
 
 export function getValues(datasets: Array<Dataset>) {
-  return datasets.reduce((all: Array<string>, dataset) => {
+  return datasets.reduce((all: Array<string | number>, dataset) => {
     return all.concat(dataset.data)
   }, [])
 }
@@ -56,7 +60,7 @@ export function computeRatio({
 export function getCoordinates(
     {data, yMin, viewH, xRatio, yRatio, margin}: CoordinatesOptions): number[][] {
   return data.map((value, index) => {
-    const y = Math.floor(viewH - ((parseInt(value) - yMin) / yRatio));
+    const y = Math.floor(viewH - ((parseInt(value.toString()) - yMin) / yRatio));
     const x = Math.floor((index) * xRatio);
     return [x, y + margin]
   })
@@ -65,7 +69,7 @@ export function getCoordinates(
 const shortMonths = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 const shortDays = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 
-export function toDate(timestamp: string, withDay = false): string {
+export function toDate(timestamp: string | number, withDay = false): string {
   const date = new Date(timestamp);
   if (withDay) {
     return `${shortDays[date.getDay()]}, ${shortMonths[date.getMonth()]} ${date.getDate()}`
@@ -73,7 +77,7 @@ export function toDate(timestamp: string, withDay = false): string {
   return `${shortMonths[date.getMonth()]} ${date.getDate()}`
 }
 
-export function css(el: HTMLElement, styles: Map = {}) {
+export function css(el: HTMLElement, styles: DynamicObject = {}) {
   Object.keys(styles).forEach((style: string) => {
     el.style[style as any] = styles[style]
   })

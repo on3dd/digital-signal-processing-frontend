@@ -1,20 +1,40 @@
 import axios from "axios";
+import {Commit, ModuleTree} from "vuex";
+import {ResponseDataArraySpecJSON} from "@/types/responseDataArray.spec";
+
+interface FileState {
+  file: ResponseDataArraySpecJSON;
+}
 
 export default {
-  state: {},
-  mutations: {},
+  state: {
+    file: new ResponseDataArraySpecJSON(),
+  },
   actions: {
-    async processFile({commit}: any, files: FileList) {
+    async processFile({commit}: {commit: Commit}, files: FileList) {
       const data = new FormData();
 
       for (const file of files) {
         console.log(file);
-        data.append('file', file)
+        data.append('file', file);
+      }
+
+      // Display the key/value pairs
+      for (const pair of data.entries()) {
+        console.log(pair[0]+ ', ' + pair[1]);
       }
 
       const response = await axios.post("http://localhost:8080/api/file", data);
-      console.log(response);
+      commit('updateData', response.data);
     }
   },
-  getters: {}
-}
+  mutations: {
+    updateData(state: FileState, file: ResponseDataArraySpecJSON) {
+      state.file = file;
+      console.log('state.file:', state.file);
+    }
+  },
+  getters: {
+    file: (state: FileState) => { console.log(state.file); return state.file },
+  }
+} as ModuleTree<{}>;

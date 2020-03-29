@@ -1,30 +1,29 @@
-export interface Map {
-  [key: string]: string;
-}
+import {DynamicObject, ResponseDataArraySpecColumn, ResponseDataArraySpecMeta} from "@/types/responseDataArray.spec";
 
 export interface DataItem {
-  columns: string[][];
-  types: Map;
-  names: Map;
-  colors: Map;
+  columns: ResponseDataArraySpecColumn[];
+  types: DynamicObject;
+  names: DynamicObject;
+  colors: DynamicObject;
+  meta?: ResponseDataArraySpecMeta;
 }
 
 export interface Dataset {
-  data: string[];
+  data: Array<string | number>;
   color: string;
   name: string;
   type: string;
 }
 
 export interface TransformedData {
-  labels?: Array<string>;
+  labels?: Array<string | number>;
   datasets?: Array<Dataset>;
 }
 
 export interface ShowDataItem {
   name: string;
   color: string;
-  value: string;
+  value: string | number;
 }
 
 export interface ShowData {

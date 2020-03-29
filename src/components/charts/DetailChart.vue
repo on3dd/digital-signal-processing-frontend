@@ -30,6 +30,7 @@
     // FIXME: Fix types
     public $parent!: any;
 
+
     prepare() {
       // console.log("DetailChart size:", this.w, this.h);
       // console.log("DetailChart cvs size:", this.cvs.width, this.cvs.height);
