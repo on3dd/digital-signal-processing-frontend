@@ -36,11 +36,11 @@
       },
       {
         title: 'Обработка файла',
-        isDone: false,
+        isDone: true,
       },
       {
         title: 'Визуализация данных',
-        isDone: false,
+        isDone: true,
       },
     ];
 

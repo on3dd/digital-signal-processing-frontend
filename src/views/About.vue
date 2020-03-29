@@ -1,10 +1,7 @@
 <template>
-  <div class="app">
-    <h1>О программе</h1>
+  <div class="about">
+    <h1 class="about__header">О программе</h1>
     <Authors/>
-    <!--    <section>-->
-    <!--      <h2>Используемые технологии</h2>-->
-    <!--    </section>-->
     <Source/>
     <ImplementedFunctions/>
   </div>
@@ -26,5 +23,13 @@
 </script>
 
 <style lang="scss" scoped>
+  .about {
+    width: 100%;
+    height: 100%;
+    padding: 3rem;
 
+    &__header {
+      text-align: center;
+    }
+  }
 </style>

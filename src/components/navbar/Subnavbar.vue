@@ -1,13 +1,14 @@
 <template>
   <ul class="sub-nav">
     <li
-        :class="{'sub-nav__item': true, 'sub-nav__item-disabled': !action.isActive}"
-        v-for="(action, idx) in actions" :key="idx"
+        v-for="(action, idx) in actions"
+        :key="idx"
+        :class="{'sub-nav__item': true, 'sub-nav__item-disabled': !isActive && idx !== 0}"
     >
       <router-link
           :to="action.to"
-          :disabled="!action.isActive"
-          :event="action.isActive ? 'click' : ''">
+          :disabled="!isActive && idx !== 0"
+          :event="isActive || (idx === 0) ? 'click' : ''">
         {{action.name}}
       </router-link>
     </li>
@@ -16,13 +17,20 @@
 
 <script lang="ts">
   import {Component, Vue} from 'vue-property-decorator';
+  import {Getter} from "vuex-class";
+  import {ResponseDataArraySpecJSON} from "@/types/responseDataArray.spec";
 
   @Component
   export default class Subnavbar extends Vue {
+    @Getter file!: ResponseDataArraySpecJSON;
+
+    get isActive(): boolean {
+      return this.file.columns.length !== 0;
+    }
+
     private actions = [
       {
         name: "Обзор",
-        isActive: true,
         to: {
           path: '/',
           query: {},
@@ -30,7 +38,6 @@
       },
       {
         name: "Каналы",
-        isActive: false,
         to: {
           path: '/',
           query: {
@@ -40,7 +47,6 @@
       },
       {
         name: "Информация",
-        isActive: false,
         to: {
           path: '/',
           query: {
@@ -72,7 +78,7 @@
       &-disabled {
         background: darken(#fafafa, 5%);
         color: lighten($textDefault, 50%);
-        cursor: default;
+        cursor: not-allowed;
 
         &:hover {
           background: darken(#fafafa, 5%);
