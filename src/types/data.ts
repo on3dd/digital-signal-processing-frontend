@@ -16,8 +16,8 @@ export interface Dataset {
 }
 
 export interface TransformedData {
-  labels?: Array<string | number>;
-  datasets?: Array<Dataset>;
+  labels: Array<string | number>;
+  datasets: Array<Dataset>;
 }
 
 export interface ShowDataItem {

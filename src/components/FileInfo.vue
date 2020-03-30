@@ -5,7 +5,7 @@
       <ul class="info__meta__list">
         <li class="info__meta__item">Общее число каналов: {{meta.channels}}</li>
         <li class="info__meta__item">Общее число отсчетов: {{meta.samples}}</li>
-        <li class="info__meta__item">Частота дискретизации: {{meta.sampleRate}}Гц (шаг между отсчетами {{1/meta.sampleRate}} сек)</li>
+        <li class="info__meta__item">Частота дискретизации: {{meta.sampleRate.toFixed(4)}}Гц (шаг между отсчетами {{frequencyToFixed}} сек)</li>
         <li class="info__meta__item">Дата и время начала записи: {{meta.startTime}}</li>
         <li class="info__meta__item">Дата и время окончания записи: {{meta.endTime}}</li>
         <li class="info__meta__item">Длительность: {{meta.recordingLength}}</li>
@@ -55,6 +55,10 @@
 
     get localeEndTime(): string {
       return this.meta.endTime.toLocaleTimeString();
+    }
+
+    get frequencyToFixed() {
+      return (1/this.meta.sampleRate).toFixed(4)
     }
   }
 </script>

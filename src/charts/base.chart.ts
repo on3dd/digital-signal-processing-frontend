@@ -38,7 +38,10 @@ export default class BaseChart extends Vue {
     this.name = this.options.name;
     this.w = this.options.width;
     this.h = this.options.height;
-    this.data = this.options.data || {};
+    this.data = this.options.data || {
+      labels: [],
+      datasets: [],
+    };
     this.trigger = this.options.onUpdate || noop;
     this.animationSpeed = this.options.animationSpeed || 15;
 
