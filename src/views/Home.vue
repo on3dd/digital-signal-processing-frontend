@@ -1,28 +1,32 @@
 <template>
   <div class="home">
     <h1 class="header">Digital Signal Processing</h1>
-    <section class="tab" v-if="tab === undefined || null">
-      <div v-if="file.columns.length === 0" class="drop-area-placeholder">
+    <section
+        v-if="tab === undefined || null || ''"
+        class="tab"
+    >
+      <div
+          v-if="file.columns.length === 0"
+          class="drop-area-placeholder"
+      >
         <DropArea/>
       </div>
       <div v-else>
         <h2 class="tab__header">Обзор</h2>
-        <DSPChart
-            :options="{
-              ...options,
-              childrenNames: {
-                detail: 'chart-1',
-                slider: 'slider-1',
-                tooltip: 'tooltip-1',
-              }
-             }"
-        />
+        <DSPChart :options="options"/>
       </div>
     </section>
-    <section class="tab" v-else-if="tab === 'channels'">
-
+    <section
+        v-else-if="tab === 'channels'"
+        class="tab"
+    >
+      <h2 class="tab__header">Каналы</h2>
+      <Channels/>
     </section>
-    <section class="tab" v-else-if="tab === 'info'">
+    <section
+        v-else-if="tab === 'info'"
+        class="tab"
+    >
       <h2 class="tab__header">Текущее состояние многоканального сигнала</h2>
       <FileInfo/>
     </section>
@@ -35,6 +39,7 @@
   import DSPChart from "@/components/charts/DSPChart.vue";
   import DropArea from "@/components/DropArea.vue";
   import FileInfo from "@/components/FileInfo.vue";
+  import Channels from "@/components/Channels.vue";
   import {transformData} from '@/utils';
   import themes from '@/themes';
   import {DataItem} from "@/types/data";
@@ -45,6 +50,7 @@
       DSPChart,
       DropArea,
       FileInfo,
+      Channels,
     },
   })
   export default class Home extends Vue {
@@ -57,77 +63,17 @@
         data: transformData(this.file as DataItem),
         theme: themes.day,
         animationSpeed: 20,
+        childrenNames: {
+          detail: `chart-main`,
+          slider: `slider-main`,
+          tooltip: `tooltip-main`,
+        }
       };
     }
 
     get tab() {
       return this.$route.query.tab;
     }
-
-    // private options1 = {
-    //   width: 800,
-    //   height: 300,
-    //   data: transformData(data[0] as DataItem),
-    //   theme: themes.day,
-    //   animationSpeed: 20,
-    //   childrenNames: {
-    //     detail: 'chart-1',
-    //     slider: 'slider-1',
-    //     tooltip: 'tooltip-1',
-    //   },
-    // };
-    //
-    // private options2 = {
-    //   width: 800,
-    //   height: 300,
-    //   data: transformData(data[1] as DataItem),
-    //   theme: themes.day,
-    //   animationSpeed: 20,
-    //   childrenNames: {
-    //     detail: 'chart-2',
-    //     slider: 'slider-2',
-    //     tooltip: 'tooltip-2',
-    //   },
-    // };
-    //
-    // private options3 = {
-    //   width: 800,
-    //   height: 300,
-    //   data: transformData(data[2] as DataItem),
-    //   theme: themes.day,
-    //   animationSpeed: 20,
-    //   childrenNames: {
-    //     detail: 'chart-3',
-    //     slider: 'slider-3',
-    //     tooltip: 'tooltip-3',
-    //   },
-    // };
-    //
-    // private options4 = {
-    //   width: 800,
-    //   height: 300,
-    //   data: transformData(data[3] as DataItem),
-    //   theme: themes.day,
-    //   animationSpeed: 20,
-    //   childrenNames: {
-    //     detail: 'chart-4',
-    //     slider: 'slider-4',
-    //     tooltip: 'tooltip-4',
-    //   },
-    // };
-    //
-    // private options5 = {
-    //   width: 800,
-    //   height: 300,
-    //   data: transformData(data[4] as DataItem),
-    //   theme: themes.day,
-    //   animationSpeed: 20,
-    //   childrenNames: {
-    //     detail: 'chart-5',
-    //     slider: 'slider-5',
-    //     tooltip: 'tooltip-5',
-    //   },
-    // };
   }
 </script>
 
